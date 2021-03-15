@@ -1,7 +1,10 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.ListPopup;
 import com.intellij.openapi.util.Disposer;
@@ -9,25 +12,25 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.nightandday.cfg.SettingsService;
+import lermitage.intellij.nightandday.cfg.StatusUIType;
+import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.Globals;
 import lermitage.intellij.nightandday.core.UIUtils;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 import java.awt.event.MouseEvent;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
-class StatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation, StatusBarWidget.Multiframe {
+class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation, StatusBarWidget.Multiframe {
 
-    public StatusPresentation(StatusBar statusBar, Project project, Disposable widget) {
+    public TextStatusPresentation(StatusBar statusBar, Project project, Disposable widget) {
         this.statusBar = statusBar;
         this.project = project;
         this.widget = widget;
     }
 
+    private final Logger LOG = Logger.getInstance(getClass().getName());
     private final StatusBar statusBar;
     private final Project project;
     private final Disposable widget;
@@ -42,7 +45,7 @@ class StatusPresentation implements StatusBarWidget.MultipleTextValuesPresentati
     @Override
     public @Nullable Consumer<MouseEvent> getClickConsumer() {
         // FIXME getClickConsumer() is never called since migration to MultipleTextValuesPresentation + Multiframe
-        return mouseEvent -> statusBar.updateWidget(Globals.PLUGIN_ID);
+        return mouseEvent -> statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
     }
 
     @Override
@@ -55,41 +58,27 @@ class StatusPresentation implements StatusBarWidget.MultipleTextValuesPresentati
         if (settingsService == null) {
             settingsService = ServiceManager.getService(SettingsService.class);
         }
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now().withHour(21).withMinute(0).withSecond(0);
-        if (now.isAfter(end)) { // reached end of period
-            end = end.plusDays(1);
+        if (settingsService.getStatusUIType() == StatusUIType.TEXT) {
+            statusText = DateUtils.computeStatusWidgetText(LOG).getLabel();
+        } else {
+            statusText = "";
         }
-        Duration diff = Duration.between(now, end);
-        statusText = DurationFormatUtils
-            .formatDurationWords(diff.abs().toMillis(), true, true)
-            .replaceAll("[0-9]{1,2} second(s)?", "")
-            .replaceAll(" hours", "hrs")
-            .replaceAll(" hour", "hr")
-            .replaceAll(" minute(s)?", "min")
-            .trim();
-        //statusText = DurationFormatUtils.formatDuration(diff.toMillis(), "H:mm") + " to 21h";
-
-        return statusText + " ⨠ 21h";
+        return statusText;
     }
 
     @Override
     public @Nullable Icon getIcon() {
-        if (settingsService == null) {
-            settingsService = ServiceManager.getService(SettingsService.class);
-        }
         return UIUtils.getStatusIcon(null);
     }
 
     @Override
     public StatusBarWidget copy() {
-        return new StatusWidget(project);
+        return new TextStatusWidget(project);
     }
 
     @Override
     public @NotNull String ID() {
-        return Globals.PLUGIN_ID;
+        return Globals.TEXT_STATUS_WIDGET_ID;
     }
 
     @Override

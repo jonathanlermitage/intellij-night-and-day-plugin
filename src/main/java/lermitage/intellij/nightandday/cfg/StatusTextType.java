@@ -1,11 +1,12 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.cfg;
 
 import java.util.Arrays;
 
 public enum StatusTextType {
-    PREDEFINED_DURATION_FORMAT("predefined duration format", 0),
-    CUSTOM_DURATION_FORMAT("custom duration format", 1),
-    PERCENTAGE("percentage", 2);
+    PREDEFINED_DURATION_FORMAT("time left", 0),
+    PERCENTAGE("percentage left", 1);
 
     String label;
     int idx;
@@ -23,9 +24,9 @@ public enum StatusTextType {
         return idx;
     }
 
-    public static StatusTextType getByIdx(int idx) {
+    public static StatusTextType getByLabel(String label) {
         return Arrays.stream(StatusTextType.values())
-            .filter(elt -> elt.getIdx() == idx)
+            .filter(elt -> elt.getLabel().equalsIgnoreCase(label))
             .findFirst().orElse(Defaults.DEFAULT_STATUS_TEXT_TYPE);
     }
 }

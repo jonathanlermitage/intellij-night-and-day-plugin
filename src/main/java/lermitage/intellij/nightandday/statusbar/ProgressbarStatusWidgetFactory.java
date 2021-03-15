@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.project.Project;
@@ -8,19 +10,19 @@ import lermitage.intellij.nightandday.core.Globals;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-public class StatusWidgetFactory implements StatusBarWidgetFactory {
+public class ProgressbarStatusWidgetFactory implements StatusBarWidgetFactory {
 
     @NotNull
     @Override
     public String getId() {
-        return Globals.PLUGIN_ID;
+        return Globals.PROGRESSBAR_STATUS_WIDGET_ID;
     }
 
     @Nls
     @NotNull
     @Override
     public String getDisplayName() {
-        return Globals.PLUGIN_NATURAL_NAME;
+        return Globals.PROGRESSBAR_STATUS_WIDGET_NAME;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class StatusWidgetFactory implements StatusBarWidgetFactory {
     @NotNull
     @Override
     public StatusBarWidget createWidget(@NotNull Project project) {
-        return new StatusWidget(project);
+        return new ProgressbarStatusWidget();
     }
 
     @Override

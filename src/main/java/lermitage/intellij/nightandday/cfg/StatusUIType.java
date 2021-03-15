@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.cfg;
 
 import java.util.Arrays;
 
 public enum StatusUIType {
-    TEXT("text only", 0),
-    PROGRESS_BAR("text and a progress bar in background", 1);
+    PROGRESS_BAR("text and a progress bar in background", 0),
+    TEXT("text only", 1);
 
     String label;
     int idx;
@@ -22,9 +24,9 @@ public enum StatusUIType {
         return idx;
     }
 
-    public static StatusUIType getByIdx(int idx) {
+    public static StatusUIType getByLabel(String label) {
         return Arrays.stream(StatusUIType.values())
-            .filter(elt -> elt.getIdx() == idx)
+            .filter(elt -> elt.getLabel().equalsIgnoreCase(label))
             .findFirst().orElse(Defaults.DEFAULT_STATUS_UI_TYPE);
     }
 }

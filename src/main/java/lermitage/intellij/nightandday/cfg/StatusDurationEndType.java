@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.cfg;
 
 import java.util.Arrays;
@@ -25,9 +27,9 @@ public enum StatusDurationEndType {
         return idx;
     }
 
-    public static StatusDurationEndType getByIdx(int idx) {
+    public static StatusDurationEndType getByLabel(String label) {
         return Arrays.stream(StatusDurationEndType.values())
-            .filter(elt -> elt.getIdx() == idx)
+            .filter(elt -> elt.getLabel().equalsIgnoreCase(label))
             .findFirst().orElse(Defaults.DEFAULT_STATUS_DURATION_END_TYPE);
     }
 }

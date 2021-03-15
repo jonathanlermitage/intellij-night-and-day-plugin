@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -12,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("WeakerAccess")
-public class StatusWidget implements StatusBarWidget {
+public class TextStatusWidget implements StatusBarWidget {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final StatusBar statusBar;
@@ -21,7 +23,7 @@ public class StatusWidget implements StatusBarWidget {
     private Thread updateThread = null;
 
     @Contract(pure = true)
-    public StatusWidget(Project project) {
+    public TextStatusWidget(Project project) {
         this.statusBar = WindowManager.getInstance().getStatusBar(project);
         this.project = project;
     }
@@ -29,13 +31,13 @@ public class StatusWidget implements StatusBarWidget {
     @NotNull
     @Override
     public String ID() {
-        return Globals.PLUGIN_ID;
+        return Globals.TEXT_STATUS_WIDGET_ID;
     }
 
     @Nullable
     @Override
     public WidgetPresentation getPresentation() {
-        return new StatusPresentation(statusBar, project, this);
+        return new TextStatusPresentation(statusBar, project, this);
     }
 
     @Override
@@ -48,9 +50,9 @@ public class StatusWidget implements StatusBarWidget {
             updateThread = Thread.currentThread();
             LOG.info("Registered updateThread " + updateThread.getId());
             while (!forceExit) {
-                statusBar.updateWidget(Globals.PLUGIN_ID);
+                statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
                 //noinspection BusyWait
-                Thread.sleep(60_000);
+                Thread.sleep(30_000);
             }
         } catch (InterruptedException e) {
             LOG.info("App disposed, forced updateThread interruption.");

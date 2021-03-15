@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.cfg;
 
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -5,6 +7,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 // see http://www.jetbrains.org/intellij/sdk/docs/basics/persisting_state_of_components.html
@@ -16,21 +19,26 @@ import org.jetbrains.annotations.NotNull;
 public class SettingsService implements PersistentStateComponent<SettingsService> {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
+    public static final String AWAKE_SEPARATOR = ":";
+
+    // which time left
+    public StatusDurationEndType statusDurationEndType;
 
     // status bar appearance
     public StatusUIType statusUIType;
-
-    // common config
+    public Integer statusWidth;
 
     // status bar: text
     public StatusTextType statusTextType;
-    public String txtPrefixTxt;
-    public String txtSuffixTxt;
     public String txtDateRegexPattern;
 
-    // status bar: percentage
-    public String percentagePrefixTxt;
-    public String percentageSuffixTxt;
+    public String prefixTxt;
+    public String suffixTxt;
+    public Boolean awakeModeEnabled;
+    public String awakeStart;
+    public String awakeEnd;
+    public String customStartDatetime;
+    public String customEndDatetime;
 
     @Override
     public SettingsService getState() {
@@ -44,12 +52,29 @@ public class SettingsService implements PersistentStateComponent<SettingsService
 
     // config keys getters/setters
 
+
+    public StatusDurationEndType getStatusDurationEndType() {
+        return statusDurationEndType == null ? Defaults.DEFAULT_STATUS_DURATION_END_TYPE : statusDurationEndType;
+    }
+
+    public void setStatusDurationEndType(StatusDurationEndType statusDurationEndType) {
+        this.statusDurationEndType = statusDurationEndType;
+    }
+
     public StatusUIType getStatusUIType() {
         return statusUIType == null ? Defaults.DEFAULT_STATUS_UI_TYPE : statusUIType;
     }
 
     public void setStatusUIType(StatusUIType statusUIType) {
         this.statusUIType = statusUIType;
+    }
+
+    public Integer getStatusWidth() {
+        return statusWidth == null ? Defaults.DEFAULT_STATUS_WIDTH : statusWidth;
+    }
+
+    public void setStatusWidth(Integer statusWidth) {
+        this.statusWidth = statusWidth;
     }
 
     public StatusTextType getStatusTextType() {
@@ -60,22 +85,6 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         this.statusTextType = statusTextType;
     }
 
-    public String getTxtPrefixTxt() {
-        return txtPrefixTxt == null ? Defaults.DEFAULT_TXT_PREFIX_TXT : txtPrefixTxt;
-    }
-
-    public void setTxtPrefixTxt(String txtPrefixTxt) {
-        this.txtPrefixTxt = txtPrefixTxt;
-    }
-
-    public String getTxtSuffixTxt() {
-        return txtSuffixTxt == null ? Defaults.DEFAULT_TXT_SUFFIX_TXT : txtSuffixTxt;
-    }
-
-    public void setTxtSuffixTxt(String txtSuffixTxt) {
-        this.txtSuffixTxt = txtSuffixTxt;
-    }
-
     public String getTxtDateRegexPattern() {
         return txtDateRegexPattern == null ? Defaults.DEFAULT_TXT_DATE_REGEX_PATTERN : txtDateRegexPattern;
     }
@@ -84,19 +93,71 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         this.txtDateRegexPattern = txtDateRegexPattern;
     }
 
-    public String getPercentagePrefixTxt() {
-        return percentagePrefixTxt == null ? Defaults.DEFAULT_PERCENTAGE_TXT_PREFIX_TXT : percentagePrefixTxt;
+    public String getPrefixTxt() {
+        return prefixTxt == null ? Defaults.DEFAULT_PREFIX_TXT : prefixTxt;
     }
 
-    public void setPercentagePrefixTxt(String percentagePrefixTxt) {
-        this.percentagePrefixTxt = percentagePrefixTxt;
+    public void setPrefixTxt(String prefixTxt) {
+        this.prefixTxt = prefixTxt;
     }
 
-    public String getPercentageSuffixTxt() {
-        return percentageSuffixTxt == null ? Defaults.DEFAULT_PERCENTAGE_TXT_SUFFIX_TXT : percentageSuffixTxt;
+    public String getSuffixTxt() {
+        return suffixTxt == null ? Defaults.DEFAULT_SUFFIX_TXT : suffixTxt;
     }
 
-    public void setPercentageSuffixTxt(String percentageSuffixTxt) {
-        this.percentageSuffixTxt = percentageSuffixTxt;
+    public void setSuffixTxt(String suffixTxt) {
+        this.suffixTxt = suffixTxt;
+    }
+
+    public Boolean getAwakeModeEnabled() {
+        return awakeModeEnabled == null ? Defaults.DEFAULT_AWAKE_MODE_ENABLED : awakeModeEnabled;
+    }
+
+    public void setAwakeModeEnabled(Boolean awakeModeEnabled) {
+        this.awakeModeEnabled = awakeModeEnabled;
+    }
+
+    public String getAwakeStart() {
+        return awakeStart == null ? Defaults.DEFAULT_AWAKE_START : awakeStart;
+    }
+
+    public void setAwakeStart(int h, int m) {
+        this.awakeStart = StringUtils.leftPad(Integer.toString(h), 2, "0")
+            + AWAKE_SEPARATOR
+            + StringUtils.leftPad(Integer.toString(m), 2, "0");
+    }
+
+    public void setAwakeStart(String awakeStart) {
+        this.awakeStart = awakeStart;
+    }
+
+    public String getAwakeEnd() {
+        return awakeEnd == null ? Defaults.DEFAULT_AWAKE_END : awakeEnd;
+    }
+
+    public void setAwakeEnd(int h, int m) {
+        this.awakeEnd = StringUtils.leftPad(Integer.toString(h), 2, "0")
+            + AWAKE_SEPARATOR
+            + StringUtils.leftPad(Integer.toString(m), 2, "0");
+    }
+
+    public void setAwakeEnd(String awakeEnd) {
+        this.awakeEnd = awakeEnd;
+    }
+
+    public String getCustomStartDatetime() {
+        return this.customStartDatetime == null || this.customStartDatetime.isEmpty() ? Defaults.DEFAULT_CUSTOM_START_DATETIME : customStartDatetime;
+    }
+
+    public void setCustomStartDatetime(String customStartDatetime) {
+        this.customStartDatetime = customStartDatetime;
+    }
+
+    public String getCustomEndDatetime() {
+        return customEndDatetime == null || customEndDatetime.isEmpty() ? Defaults.DEFAULT_CUSTOM_END_DATETIME : customEndDatetime;
+    }
+
+    public void setCustomEndDatetime(String customEndDatetime) {
+        this.customEndDatetime = customEndDatetime;
     }
 }

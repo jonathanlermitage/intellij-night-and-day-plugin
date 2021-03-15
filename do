@@ -50,7 +50,7 @@ for ((cmd = 1; cmd <= $#; cmd++)); do
         ;;
 
     "svgo")
-        svgo --folder=src/main/resources/icons/nightandday/ --multipass --config=svgo.yml
+        svgo --folder=src/main/resources/icons/nightandday/
         ;;
 
     esac

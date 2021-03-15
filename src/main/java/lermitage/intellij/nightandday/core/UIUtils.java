@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package lermitage.intellij.nightandday.core;
 
 import com.intellij.openapi.util.IconLoader;

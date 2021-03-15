@@ -32,8 +32,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <applicationService serviceImplementation="lermitage.intellij.nightandday.cfg.SettingsService"/>
-        <statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.StatusWidgetFactory"
-                                id="lermitage.intellij.nightandday.statusbar.StatusWidgetFactory"
+        <!--statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
+                                id="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
+                                order="first"/-->
+        <statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidgetFactory"
+                                id="lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidgetFactory"
                                 order="first"/>
         <applicationConfigurable instance="lermitage.intellij.nightandday.cfg.gui.SettingsForm"
                                  id="LermitageNightandday"
