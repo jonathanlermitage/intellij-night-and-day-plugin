@@ -6,10 +6,12 @@ public class TimeLeft {
 
     private final String label;
     private final int percentage;
+    private final String tooltip;
 
-    public TimeLeft(String label, int percentage) {
+    public TimeLeft(String label, int percentage, String tooltip) {
         this.label = label;
         this.percentage = percentage;
+        this.tooltip = tooltip;
     }
 
     public String getLabel() {
@@ -18,5 +20,9 @@ public class TimeLeft {
 
     public int getPercentage() {
         return percentage;
+    }
+
+    public String getTooltip() {
+        return tooltip;
     }
 }

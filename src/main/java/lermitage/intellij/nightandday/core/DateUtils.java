@@ -3,57 +3,83 @@
 package lermitage.intellij.nightandday.core;
 
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusDurationEndType;
+import lermitage.intellij.nightandday.cfg.StatusTextType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
 import static lermitage.intellij.nightandday.cfg.StatusDurationEndType.CUSTOM_DATE;
+import static lermitage.intellij.nightandday.cfg.StatusTextType.PREDEFINED_DURATION_FORMAT_PLUS_PERCENTAGE;
 
 public class DateUtils {
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final String DATE_TIME_MASK = "####-##-## ##:##";
     public static final String TIME_MASK = "##:##";
+    public static final String TIMER_ENDED_MSG = "timer ended";
 
-    public static TimeLeft computeStatusWidgetText(Logger logger) {
-        LocalTime timerStart = LocalTime.now();
+    public static TimeLeft computeStatusWidgetText() {
         try {
             String statusText;
+            String tooltip;
             SettingsService settingsService = ServiceManager.getService(SettingsService.class);
+            String prefix = settingsService.getPrefixTxt();
+            String suffix = settingsService.getSuffixTxt();
             String awakeStart = settingsService.getAwakeStart();
             String awakeEnd = settingsService.getAwakeEnd();
+            StatusDurationEndType statusDurationEndType = settingsService.getStatusDurationEndType();
+
+            tooltip = "type: ";
+            if (statusDurationEndType == StatusDurationEndType.CUSTOM_DATE) {
+                tooltip += " custom, " + settingsService.getCustomStartDatetime() + " ≻ " + settingsService.getCustomEndDatetime();
+            } else {
+                tooltip += statusDurationEndType.getLabel();
+            }
+            if (settingsService.getAwakeModeEnabled()) {
+                tooltip += "<br/>awake time: " + awakeStart + " ≻ " + awakeEnd;
+            }
 
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime end = DateUtils.endOf(settingsService.getStatusDurationEndType(), settingsService.getCustomEndDatetime());
+            LocalDateTime end = DateUtils.endOf(statusDurationEndType, settingsService.getCustomEndDatetime());
 
             int percentLeft = timeLeftPercentage(awakeStart, awakeEnd);
 
-            switch (settingsService.getStatusTextType()) {
+            if (percentLeft == 0) {
+                statusText = TIMER_ENDED_MSG ;
+                statusText = prefix + statusText + suffix;
+                return new TimeLeft(statusText, percentLeft, tooltip);
+            }
+
+            StatusTextType statusTextType = settingsService.getStatusTextType();
+
+            switch (statusTextType) {
 
                 case PREDEFINED_DURATION_FORMAT:
+                case PREDEFINED_DURATION_FORMAT_PLUS_PERCENTAGE:
                     Duration timeLeft;
+                    if (now.isAfter(end)) {
+                        if (statusDurationEndType == CUSTOM_DATE) {
+                            return new TimeLeft(prefix + TIMER_ENDED_MSG + suffix, 0, tooltip);
+                        } else {
+                            end = end.plusDays(1);
+                        }
+                    }
                     if (settingsService.getAwakeModeEnabled()) {
                         timeLeft = DateUtils.between(now, end, awakeStart, awakeEnd);
                     } else {
-                        if (now.isAfter(end)) { // reached end of period
-                            if (settingsService.getStatusDurationEndType() == CUSTOM_DATE) {
-                                return new TimeLeft("timer ended", 0);
-                            } else {
-                                end = end.plusDays(1);
-                            }
-                        }
                         timeLeft = Duration.between(now, end);
                     }
                     statusText = DateUtils.toText(timeLeft);
+                    if (statusTextType == PREDEFINED_DURATION_FORMAT_PLUS_PERCENTAGE) {
+                        statusText += " (" + percentLeft + "%)";
+                    }
                     break;
 
                 case PERCENTAGE:
@@ -64,18 +90,10 @@ public class DateUtils {
                     throw new IllegalStateException("No StatusTextType");
             }
 
-            if (statusText.isEmpty() || statusText.equals("0%")) {
-                statusText = "timer ended";
-            }
-            statusText = settingsService.getPrefixTxt() + statusText + settingsService.getSuffixTxt();
-            return new TimeLeft(statusText, percentLeft);
+            statusText = prefix + statusText + suffix;
+            return new TimeLeft(statusText, percentLeft, tooltip);
         } catch (Exception e) {
-            return new TimeLeft("Error: " + e.getMessage(), 0);
-        } finally {
-            long executionDuration = Duration.between(timerStart, LocalTime.now()).toMillis();
-            if (executionDuration > 50) {
-                logger.warn("Time left computed in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
-            }
+            return new TimeLeft("Error: " + e.getMessage(), 0, "");
         }
     }
 
@@ -86,18 +104,18 @@ public class DateUtils {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime end = DateUtils.endOf(settingsService.getStatusDurationEndType(), settingsService.getCustomEndDatetime());
         long timeTotal;
+        if (now.isAfter(end)) {
+            if (settingsService.getStatusDurationEndType() == CUSTOM_DATE) {
+                return 0;
+            } else {
+                end = end.plusDays(1);
+            }
+        }
         if (settingsService.getAwakeModeEnabled()) {
             timeTotal = DateUtils.between(start, end, awakeStart, awakeEnd).toMillis();
             long timeRemaining = DateUtils.between(now, end, awakeStart, awakeEnd).toMillis();
             return (int) (timeRemaining * 100 / timeTotal);
         } else {
-            if (now.isAfter(end)) { // reached end of period
-                if (settingsService.getStatusDurationEndType() == CUSTOM_DATE) {
-                    return 0;
-                } else {
-                    end = end.plusDays(1);
-                }
-            }
             timeTotal = Duration.between(start, end).toMillis();
             long timeDone = Duration.between(start, now).toMillis();
             return (int) (100 - (timeDone * 100 / timeTotal));

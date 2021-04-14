@@ -27,6 +27,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     // status bar appearance
     public StatusUIType statusUIType;
     public Integer statusWidth;
+    public Integer fontSize;
 
     // status bar: text
     public StatusTextType statusTextType;
@@ -70,11 +71,19 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     }
 
     public Integer getStatusWidth() {
-        return statusWidth == null ? Defaults.DEFAULT_STATUS_WIDTH : statusWidth;
+        return statusWidth == null ? Defaults.DEFAULT_WIDGET_WIDTH : statusWidth;
     }
 
     public void setStatusWidth(Integer statusWidth) {
         this.statusWidth = statusWidth;
+    }
+
+    public Integer getFontSize() {
+        return fontSize == null ? Defaults.DEFAULT_FONT_SIZE : fontSize;
+    }
+
+    public void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
     }
 
     public StatusTextType getStatusTextType() {

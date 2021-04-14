@@ -5,13 +5,13 @@ package lermitage.intellij.nightandday.cfg.gui;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
-import lermitage.intellij.nightandday.core.DateUtils;
-import lermitage.intellij.nightandday.core.IJUtils;
 import lermitage.intellij.nightandday.cfg.Defaults;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusDurationEndType;
 import lermitage.intellij.nightandday.cfg.StatusTextType;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
+import lermitage.intellij.nightandday.core.DateUtils;
+import lermitage.intellij.nightandday.core.IJUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,16 +22,18 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.ItemEvent;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class SettingsForm implements Configurable {
 
@@ -57,6 +59,10 @@ public class SettingsForm implements Configurable {
     private JFormattedTextField customDatesEndTextField;
     private JLabel customDatesLabel;
     private JButton customDatesStartButton;
+    private JLabel fontSizeLabel;
+    private JSpinner fontSizeField;
+    private JLabel widgetWidthLabel;
+    private JSpinner widgetWidthField;
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final SettingsService settingsService;
@@ -81,6 +87,8 @@ public class SettingsForm implements Configurable {
             suffixTextField.setText(Defaults.DEFAULT_SUFFIX_TXT);
             customDatesStartTextField.setText(Defaults.DEFAULT_CUSTOM_START_DATETIME);
             customDatesEndTextField.setText(Defaults.DEFAULT_CUSTOM_END_DATETIME);
+            fontSizeField.setValue(Defaults.DEFAULT_FONT_SIZE);
+            widgetWidthField.setValue(Defaults.DEFAULT_WIDGET_WIDTH);
             modified = true;
         });
         customDatesStartButton.addActionListener(e -> {
@@ -93,6 +101,18 @@ public class SettingsForm implements Configurable {
     @Override
     public String getDisplayName() {
         return "Night and Day";
+    }
+
+    private void updateComponentsVisibility() {
+        boolean progressbarSelected = Objects.equals(statusUITypeSelector.getSelectedItem(), StatusUIType.PROGRESS_BAR.getLabel());
+        fontSizeLabel.setVisible(progressbarSelected);
+        fontSizeField.setVisible(progressbarSelected);
+        widgetWidthLabel.setVisible(progressbarSelected);
+        widgetWidthField.setVisible(progressbarSelected);
+
+        boolean awakeModeSelected = awakeModeEnabledCheckBox.isSelected();
+        awakeModeEnabledCheckBox.setSelected(awakeModeSelected);
+        awakePanel.setVisible(awakeModeSelected);
     }
 
     @Nullable
@@ -108,6 +128,8 @@ public class SettingsForm implements Configurable {
         awakeLabel.setText("Awake time:");
         customDatesLabel.setText("Custom date:");
         customDatesStartButton.setText("Now");
+        fontSizeLabel.setText("Font size:");
+        widgetWidthLabel.setText("Status Bar widget width:");
 
         awakeStartTextField.setToolTipText("<html><b>HH:mm</b> (24-hours time format)</html>");
         awakeEndTextField.setToolTipText("<html><b>HH:mm</b> (24-hours time format)</html>");
@@ -146,24 +168,31 @@ public class SettingsForm implements Configurable {
                 modified = true;
             }
         };
+        ChangeListener changeListener = e -> modified = true;
 
         statusDurationEndTypeSelector.addItemListener(item -> {
             customDatesPanel.setVisible(item.getItem().equals(StatusDurationEndType.CUSTOM_DATE.getLabel()));
             modified = true;
         });
         statusUITypeSelector.addComponentListener(componentListener);
+        statusUITypeSelector.addItemListener(item -> {
+            updateComponentsVisibility();
+            modified = true;
+        });
         statusTextTypeSelector.addComponentListener(componentListener);
         awakeModeEnabledCheckBox.addComponentListener(componentListener);
         awakeStartTextField.getDocument().addDocumentListener(docListener);
         awakeEndTextField.getDocument().addDocumentListener(docListener);
         awakeModeEnabledCheckBox.addItemListener(item -> {
-            boolean selected = item.getStateChange() == ItemEvent.SELECTED;
-            awakeModeEnabledCheckBox.setSelected(selected);
-            awakePanel.setVisible(selected);
+            updateComponentsVisibility();
             modified = true;
         });
         prefixTextField.getDocument().addDocumentListener(docListener);
         suffixTextField.getDocument().addDocumentListener(docListener);
+        fontSizeField.addChangeListener(changeListener);
+        widgetWidthField.addChangeListener(changeListener);
+
+        updateComponentsVisibility();
 
         return mainPane;
     }
@@ -185,7 +214,9 @@ public class SettingsForm implements Configurable {
         settingsService.setSuffixTxt(suffixTextField.getText());
         settingsService.setCustomStartDatetime(customDatesStartTextField.getText());
         settingsService.setCustomEndDatetime(customDatesEndTextField.getText());
-        IJUtils.refreshOpenedProjects();
+        settingsService.setFontSize((Integer) fontSizeField.getValue());
+        settingsService.setStatusWidth((Integer) widgetWidthField.getValue());
+        IJUtils.refreshOpenedProjects(settingsService.getStatusUIType());
     }
 
     @Override
@@ -200,6 +231,8 @@ public class SettingsForm implements Configurable {
         settingsService.setSuffixTxt(settingsService.getSuffixTxt());
         settingsService.setCustomStartDatetime(settingsService.getCustomStartDatetime());
         settingsService.setCustomEndDatetime(settingsService.getCustomEndDatetime());
+        settingsService.setFontSize(settingsService.getFontSize());
+        settingsService.setStatusWidth(settingsService.getStatusWidth());
         loadConfig();
         modified = false;
     }
@@ -217,6 +250,8 @@ public class SettingsForm implements Configurable {
         customDatesPanel.setVisible(settingsService.getStatusDurationEndType() == StatusDurationEndType.CUSTOM_DATE);
         customDatesStartTextField.setText(settingsService.getCustomStartDatetime());
         customDatesEndTextField.setText(settingsService.getCustomEndDatetime());
+        fontSizeField.setValue(settingsService.getFontSize());
+        widgetWidthField.setValue(settingsService.getStatusWidth());
     }
 
     private void createUIComponents() {

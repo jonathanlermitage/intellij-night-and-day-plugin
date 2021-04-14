@@ -1,7 +1,5 @@
 <h1 align="center">
-    <!--a href="https://plugins.jetbrains.com/plugin/11058-extra-icons">
-      <img src="./src/main/resources/META-INF/pluginIcon.svg" width="84" height="84" alt="logo"/>
-    </a><br/-->
+    <img src="./src/main/resources/META-INF/pluginIcon.svg" width="84" height="84" alt="logo"/><br/>
     Nigh and Day
 </h1>
 
@@ -16,7 +14,8 @@
     <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/actions?query=workflow%3A%22Compatibility+EAP%22"><img src="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/workflows/Compatibility%20EAP/badge.svg"/></a>
 </p-->
 
-An Intellij IDEA plugin that shows in Status Bar how much time left in percentage or duration (until the end of day, week, month, year, or a custom date or time).<br/>
+An Intellij IDEA plugin that shows in Status Bar how much time left in percentage or duration (until the end of day, week, month, year, or a custom date time).  
+This plugin is highly inspired from the [Day Night](https://getdaynight.com) application.
 
 1. [Build](#build)  
 2. [Contribution](#contribution)  

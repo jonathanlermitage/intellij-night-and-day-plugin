@@ -6,7 +6,8 @@ import java.util.Arrays;
 
 public enum StatusTextType {
     PREDEFINED_DURATION_FORMAT("time left", 0),
-    PERCENTAGE("percentage left", 1);
+    PERCENTAGE("percentage left", 1),
+    PREDEFINED_DURATION_FORMAT_PLUS_PERCENTAGE("time left + percentage left", 2);
 
     String label;
     int idx;

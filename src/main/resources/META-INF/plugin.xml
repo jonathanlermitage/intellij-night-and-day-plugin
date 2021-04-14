@@ -6,10 +6,11 @@
 
     <description><![CDATA[
       An Intellij IDEA plugin that shows in Status Bar how much time left in percentage or duration (until the end of day,
-      week, month, year, or a custom date or time)..<br/>
-      If you find this plugin helpful, you can <a href="http://buymeacoff.ee/jlermitage">buy me a coffee</a>. Thank you! 👍<br/><br/>
-      See <a href="https://github.com/jonathanlermitage/intellij-night-and-day-plugin/blob/ide201/CHANGELOG.md">changelog</a>
-      and <a href="https://github.com/jonathanlermitage/intellij-night-and-day-plugin/blob/ide201/README.md">readme</a> on GitHub.
+      week, month, year, or a custom date time).<br/>
+      This plugin is highly inspired from the <a href="https://getdaynight.com">Day Night</a> application.<br/><br/>
+      If you find this plugin helpful, you can <a href="http://buymeacoff.ee/jlermitage">buy me a coffee</a>. <b>Thank you! 👍</b><br/><br/>
+      See <a href="https://github.com/jonathanlermitage/intellij-night-and-day-plugin/blob/main/CHANGELOG.md">changelog</a>
+      and <a href="https://github.com/jonathanlermitage/intellij-night-and-day-plugin/blob/main/README.md">readme</a> on GitHub.
       Check also my <a href="https://plugins.jetbrains.com/author/ed9cc7eb-74f5-46c1-b0df-67162fe1a1c5">plugins</a>.
     ]]>
     </description>
@@ -32,9 +33,9 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <applicationService serviceImplementation="lermitage.intellij.nightandday.cfg.SettingsService"/>
-        <!--statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
+        <statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
                                 id="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
-                                order="first"/-->
+                                order="first"/>
         <statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidgetFactory"
                                 id="lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidgetFactory"
                                 order="first"/>

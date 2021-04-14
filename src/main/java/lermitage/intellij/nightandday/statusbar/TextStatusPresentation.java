@@ -12,15 +12,18 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.nightandday.cfg.SettingsService;
+import lermitage.intellij.nightandday.cfg.StatusDurationEndType;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.Globals;
-import lermitage.intellij.nightandday.core.UIUtils;
+import lermitage.intellij.nightandday.core.TimeLeft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
+import java.time.LocalTime;
 
 class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation, StatusBarWidget.Multiframe {
 
@@ -35,11 +38,11 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
     private final Project project;
     private final Disposable widget;
     private SettingsService settingsService;
-    private String statusText = getSelectedValue();
+    private String statusTooltip = "";
 
     @Override
     public String getTooltipText() {
-        return statusText;
+        return "<html>" + statusTooltip + "</html>";
     }
 
     @Override
@@ -58,17 +61,23 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
         if (settingsService == null) {
             settingsService = ServiceManager.getService(SettingsService.class);
         }
-        if (settingsService.getStatusUIType() == StatusUIType.TEXT) {
-            statusText = DateUtils.computeStatusWidgetText(LOG).getLabel();
-        } else {
-            statusText = "";
+        if (settingsService.getStatusUIType() != StatusUIType.TEXT) {
+            return "";
+        }
+        LocalTime timerStart = LocalTime.now();
+        TimeLeft timeLeft = DateUtils.computeStatusWidgetText();
+        String statusText = timeLeft.getLabel();
+        statusTooltip = timeLeft.getTooltip();
+        long executionDuration = Duration.between(timerStart, LocalTime.now()).toMillis();
+        if (executionDuration > 30) {
+            LOG.warn("Status updated in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
         }
         return statusText;
     }
 
     @Override
     public @Nullable Icon getIcon() {
-        return UIUtils.getStatusIcon(null);
+        return null;//UIUtils.getStatusIcon(null);
     }
 
     @Override

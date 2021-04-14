@@ -2,6 +2,7 @@
 
 package lermitage.intellij.nightandday.cfg;
 
+import com.intellij.util.ui.JBUI;
 import lermitage.intellij.nightandday.core.DateUtils;
 
 import java.time.LocalDateTime;
@@ -18,5 +19,6 @@ public class Defaults {
     public static final String DEFAULT_AWAKE_END = "17:00";
     public static final String DEFAULT_CUSTOM_START_DATETIME = LocalDateTime.now().withHour(0).withMinute(0).format(DateUtils.DATE_TIME_FORMATTER);
     public static final String DEFAULT_CUSTOM_END_DATETIME = LocalDateTime.now().withHour(23).withMinute(59).format(DateUtils.DATE_TIME_FORMATTER);
-    public static final Integer DEFAULT_STATUS_WIDTH = 100;
+    public static final Integer DEFAULT_WIDGET_WIDTH = 100;
+    public static final Integer DEFAULT_FONT_SIZE = JBUI.Fonts.toolbarFont().getSize();
 }

@@ -7,6 +7,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
+import lermitage.intellij.nightandday.cfg.StatusUIType;
+import lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidget;
 import org.jetbrains.annotations.Nullable;
 
 public class IJUtils {
@@ -14,7 +16,7 @@ public class IJUtils {
     /**
      * Refresh project status bar.
      */
-    public static void refresh(Project project) {
+    public static void refresh(Project project, StatusUIType statusUIType) {
         if (IJUtils.isAlive(project)) {
             ProjectView view = ProjectView.getInstance(project);
             if (view != null) {
@@ -22,6 +24,13 @@ public class IJUtils {
                 if (statusBar != null) {
                     statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
                     statusBar.updateWidget(Globals.PROGRESSBAR_STATUS_WIDGET_ID);
+                    ProgressbarStatusWidget widget = (ProgressbarStatusWidget) statusBar.getWidget(Globals.PROGRESSBAR_STATUS_WIDGET_ID);
+                    if (widget != null) {
+                        widget.setVisible(false); // trick to force UI update if widget size changed
+                        if (statusUIType == StatusUIType.PROGRESS_BAR) {
+                            widget.setVisible(true);
+                        }
+                    }
                 }
             }
         }
@@ -30,10 +39,10 @@ public class IJUtils {
     /**
      * Refresh all opened project status bar.
      */
-    public static void refreshOpenedProjects() {
+    public static void refreshOpenedProjects(StatusUIType statusUIType) {
         Project[] projects = ProjectManager.getInstance().getOpenProjects();
         for (Project project : projects) {
-            refresh(project);
+            refresh(project, statusUIType);
         }
     }
 
