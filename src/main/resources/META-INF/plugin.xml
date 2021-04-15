@@ -5,7 +5,7 @@
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
-      An Intellij-based IDEA plugin that shows in Status Bar how much time left in percentage or duration (until the end of day,
+      An IntelliJ IDEA based plugin that shows in Status Bar how much time left in percentage or duration (until the end of day,
       week, month, year, or a custom date time).<br/>
       This plugin is highly inspired from the <a href="https://getdaynight.com">Day Night</a> application.<br/><br/>
       If you find this plugin helpful, you can <a href="http://buymeacoff.ee/jlermitage">buy me a coffee</a>. <b>Thank you! 👍</b><br/><br/>

@@ -14,7 +14,7 @@
     <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/actions?query=workflow%3A%22Compatibility+EAP%22"><img src="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/workflows/Compatibility%20EAP/badge.svg"/></a>
 </p-->
 
-An Intellij-based IDEA plugin that shows in Status Bar how much time left in percentage or duration (until the end of day, week, month, year, or a custom date time).  
+An IntelliJ IDEA based plugin that shows in Status Bar how much time left in percentage or duration (until the end of day, week, month, year, or a custom date time).  
 This plugin is highly inspired from the [Day Night](https://getdaynight.com) application.
 
 1. [Build](#build)  
