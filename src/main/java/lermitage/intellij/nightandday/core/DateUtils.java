@@ -52,7 +52,7 @@ public class DateUtils {
             int percentLeft = timeLeftPercentage(awakeStart, awakeEnd);
 
             if (percentLeft == 0) {
-                statusText = TIMER_ENDED_MSG ;
+                statusText = TIMER_ENDED_MSG;
                 statusText = prefix + statusText + suffix;
                 return new TimeLeft(statusText, percentLeft, tooltip);
             }
