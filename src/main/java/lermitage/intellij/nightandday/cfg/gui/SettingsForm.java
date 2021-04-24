@@ -5,6 +5,9 @@ package lermitage.intellij.nightandday.cfg.gui;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
+import com.intellij.ui.ColorPicker;
+import com.intellij.ui.IdeBorderFactory;
+import com.intellij.ui.picker.ColorListener;
 import lermitage.intellij.nightandday.cfg.Defaults;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusDurationEndType;
@@ -12,6 +15,7 @@ import lermitage.intellij.nightandday.cfg.StatusTextType;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.IJUtils;
+import lermitage.intellij.nightandday.core.UIUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +32,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
+import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.text.ParseException;
@@ -63,6 +68,26 @@ public class SettingsForm implements Configurable {
     private JSpinner fontSizeField;
     private JLabel widgetWidthLabel;
     private JSpinner widgetWidthField;
+    private JLabel redColorLabel1;
+    private JSpinner redColorPercentageField;
+    private JLabel redColorLabel2;
+    private JLabel redColorTextField;
+    private JPanel pgbarTextPanel;
+    private JLabel yellowColorLabel1;
+    private JSpinner yellowColorPercentageField;
+    private JLabel yellowColorLabel2;
+    private JLabel yellowColorTextField;
+    private JLabel greenColorLabel1;
+    private JLabel greenColorTextField;
+    private JCheckBox customPgbarColorsEnabledCheckBox;
+    private JPanel pgbarSettingsPanel;
+    private JButton redColorPickerBtn;
+    private JButton yellowColorPickerBtn;
+    private JButton greenColorPickerBtn;
+
+    private Color greenColor;
+    private Color yellowColor;
+    private Color redColor;
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final SettingsService settingsService;
@@ -89,11 +114,51 @@ public class SettingsForm implements Configurable {
             customDatesEndTextField.setText(Defaults.DEFAULT_CUSTOM_END_DATETIME);
             fontSizeField.setValue(Defaults.DEFAULT_FONT_SIZE);
             widgetWidthField.setValue(Defaults.DEFAULT_WIDGET_WIDTH);
+            customPgbarColorsEnabledCheckBox.setSelected(Defaults.DEFAULT_CUSTOM_PGBAR_COLORS_ENABLED);
+            greenColorTextField.setText(Defaults.Colors.DEFAULT_GREEN_COLOR_STR);
+            yellowColorTextField.setText(Defaults.Colors.DEFAULT_YELLOW_COLOR_STR);
+            redColorTextField.setText(Defaults.Colors.DEFAULT_RED_COLOR_STR);
             modified = true;
         });
         customDatesStartButton.addActionListener(e -> {
             customDatesStartTextField.setText(DateUtils.DATE_TIME_FORMATTER.format(LocalDateTime.now()));
             modified = true;
+        });
+        greenColorPickerBtn.addActionListener(e -> {
+            //noinspection Convert2Lambda
+            ColorPicker.showColorPickerPopup(null, greenColor, null, new ColorListener() {
+                @Override
+                public void colorChanged(Color color, Object source) {
+                    greenColor = color;
+                    greenColorTextField.setText(UIUtils.colorToRgbaStr(color));
+                    greenColorTextField.setBackground(color);
+                    modified = true;
+                }
+            });
+        });
+        yellowColorPickerBtn.addActionListener(e -> {
+            //noinspection Convert2Lambda
+            ColorPicker.showColorPickerPopup(null, yellowColor, null, new ColorListener() {
+                @Override
+                public void colorChanged(Color color, Object source) {
+                    yellowColor = color;
+                    yellowColorTextField.setText(UIUtils.colorToRgbaStr(color));
+                    yellowColorTextField.setBackground(color);
+                    modified = true;
+                }
+            });
+        });
+        redColorPickerBtn.addActionListener(e -> {
+            //noinspection Convert2Lambda
+            ColorPicker.showColorPickerPopup(null, redColor, null, new ColorListener() {
+                @Override
+                public void colorChanged(Color color, Object source) {
+                    redColor = color;
+                    redColorTextField.setText(UIUtils.colorToRgbaStr(color));
+                    redColorTextField.setBackground(color);
+                    modified = true;
+                }
+            });
         });
     }
 
@@ -107,12 +172,17 @@ public class SettingsForm implements Configurable {
         boolean progressbarSelected = Objects.equals(statusUITypeSelector.getSelectedItem(), StatusUIType.PROGRESS_BAR.getLabel());
         fontSizeLabel.setVisible(progressbarSelected);
         fontSizeField.setVisible(progressbarSelected);
-        widgetWidthLabel.setVisible(progressbarSelected);
-        widgetWidthField.setVisible(progressbarSelected);
+        pgbarTextPanel.setVisible(progressbarSelected);
 
         boolean awakeModeSelected = awakeModeEnabledCheckBox.isSelected();
         awakeModeEnabledCheckBox.setSelected(awakeModeSelected);
         awakePanel.setVisible(awakeModeSelected);
+
+        boolean customDatesSelected = Objects.equals(statusDurationEndTypeSelector.getSelectedItem(), StatusDurationEndType.CUSTOM_DATE.getLabel());
+        customDatesPanel.setVisible(customDatesSelected);
+
+        boolean customPgbarColorsSelected = customPgbarColorsEnabledCheckBox.isSelected();
+        pgbarSettingsPanel.setVisible(customPgbarColorsSelected);
     }
 
     @Nullable
@@ -129,12 +199,25 @@ public class SettingsForm implements Configurable {
         customDatesLabel.setText("Custom date:");
         customDatesStartButton.setText("Now");
         fontSizeLabel.setText("Font size:");
-        widgetWidthLabel.setText("Status Bar widget width:");
+        widgetWidthLabel.setText("Widget width:");
 
         awakeStartTextField.setToolTipText("<html><b>HH:mm</b> (24-hours time format)</html>");
         awakeEndTextField.setToolTipText("<html><b>HH:mm</b> (24-hours time format)</html>");
         customDatesStartTextField.setToolTipText("<html><b>yyyy-MM-dd HH:mm</b> (ISO date, 24-hours time format)</html>");
         customDatesEndTextField.setToolTipText("<html><b>yyyy-MM-dd HH:mm</b> (ISO date, 24-hours time format)</html>");
+
+        awakePanel.setBorder(IdeBorderFactory.createTitledBorder("Awake Time Settings:"));
+        customDatesPanel.setBorder(IdeBorderFactory.createTitledBorder("Custom Date Settings:"));
+        customPgbarColorsEnabledCheckBox.setText("Customize progress bar background colors");
+        pgbarTextPanel.setBorder(IdeBorderFactory.createTitledBorder("Progress Bar Settings:"));
+        redColorLabel1.setText("Below");
+        redColorLabel2.setText("% of time left, use this RGBA color:");
+        redColorPickerBtn.setText("Choose color");
+        yellowColorLabel1.setText("Below");
+        yellowColorLabel2.setText("% of time left, use this RGBA color:");
+        yellowColorPickerBtn.setText("Choose color");
+        greenColorLabel1.setText("Otherwise, use this RGBA color:");
+        greenColorPickerBtn.setText("Choose color");
 
         loadConfig();
 
@@ -181,9 +264,13 @@ public class SettingsForm implements Configurable {
         });
         statusTextTypeSelector.addComponentListener(componentListener);
         awakeModeEnabledCheckBox.addComponentListener(componentListener);
-        awakeStartTextField.getDocument().addDocumentListener(docListener);
+        customPgbarColorsEnabledCheckBox.addComponentListener(componentListener);
         awakeEndTextField.getDocument().addDocumentListener(docListener);
         awakeModeEnabledCheckBox.addItemListener(item -> {
+            updateComponentsVisibility();
+            modified = true;
+        });
+        customPgbarColorsEnabledCheckBox.addItemListener(item -> {
             updateComponentsVisibility();
             modified = true;
         });
@@ -216,6 +303,10 @@ public class SettingsForm implements Configurable {
         settingsService.setCustomEndDatetime(customDatesEndTextField.getText());
         settingsService.setFontSize((Integer) fontSizeField.getValue());
         settingsService.setStatusWidth((Integer) widgetWidthField.getValue());
+        settingsService.setCustomPbgarColorsEnabled(customPgbarColorsEnabledCheckBox.isSelected());
+        settingsService.setRgbaGreenColor(greenColorTextField.getText());
+        settingsService.setRgbaYellowColor(yellowColorTextField.getText());
+        settingsService.setRgbaRedColor(redColorTextField.getText());
         IJUtils.refreshOpenedProjects(settingsService.getStatusUIType());
     }
 
@@ -233,6 +324,10 @@ public class SettingsForm implements Configurable {
         settingsService.setCustomEndDatetime(settingsService.getCustomEndDatetime());
         settingsService.setFontSize(settingsService.getFontSize());
         settingsService.setStatusWidth(settingsService.getStatusWidth());
+        settingsService.setCustomPbgarColorsEnabled(settingsService.getCustomPbgarColorsEnabled());
+        settingsService.setRgbaGreenColor(settingsService.getRgbaGreenColor());
+        settingsService.setRgbaYellowColor(settingsService.getRgbaYellowColor());
+        settingsService.setRgbaRedColor(settingsService.getRgbaRedColor());
         loadConfig();
         modified = false;
     }
@@ -241,17 +336,28 @@ public class SettingsForm implements Configurable {
         statusUITypeSelector.setSelectedIndex(settingsService.getStatusUIType().getIdx());
         statusTextTypeSelector.setSelectedIndex(settingsService.getStatusTextType().getIdx());
         statusDurationEndTypeSelector.setSelectedIndex(settingsService.getStatusDurationEndType().getIdx());
-        awakePanel.setVisible(settingsService.getAwakeModeEnabled());
         awakeModeEnabledCheckBox.setSelected(settingsService.getAwakeModeEnabled());
         awakeStartTextField.setText(settingsService.getAwakeStart());
         awakeEndTextField.setText(settingsService.getAwakeEnd());
         prefixTextField.setText(settingsService.getPrefixTxt());
         suffixTextField.setText(settingsService.getSuffixTxt());
-        customDatesPanel.setVisible(settingsService.getStatusDurationEndType() == StatusDurationEndType.CUSTOM_DATE);
         customDatesStartTextField.setText(settingsService.getCustomStartDatetime());
         customDatesEndTextField.setText(settingsService.getCustomEndDatetime());
         fontSizeField.setValue(settingsService.getFontSize());
         widgetWidthField.setValue(settingsService.getStatusWidth());
+        customPgbarColorsEnabledCheckBox.setSelected(settingsService.getCustomPbgarColorsEnabled());
+        greenColorTextField.setText(settingsService.getRgbaGreenColor());
+        yellowColorTextField.setText(settingsService.getRgbaYellowColor());
+        redColorTextField.setText(settingsService.getRgbaRedColor());
+
+        greenColor = UIUtils.rgbaStrToColor(settingsService.getRgbaGreenColor());
+        yellowColor = UIUtils.rgbaStrToColor(settingsService.getRgbaYellowColor());
+        redColor = UIUtils.rgbaStrToColor(settingsService.getRgbaRedColor());
+        greenColorTextField.setBackground(greenColor);
+        yellowColorTextField.setBackground(yellowColor);
+        redColorTextField.setBackground(redColor);
+
+        updateComponentsVisibility();
     }
 
     private void createUIComponents() {

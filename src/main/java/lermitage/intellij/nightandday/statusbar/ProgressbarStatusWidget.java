@@ -11,15 +11,16 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.JBUI;
+import lermitage.intellij.nightandday.cfg.Defaults;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.Globals;
 import lermitage.intellij.nightandday.core.TimeLeft;
+import lermitage.intellij.nightandday.core.UIUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -37,15 +38,6 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     private boolean forceExit = false;
     private Thread updateThread = null;
     private SettingsService settingsService;
-    private static final JBColor PROGRESS_BAR_GREEN = new JBColor(
-        new Color(28, 152, 19, 80),
-        new Color(56, 113, 41, 80));
-    private static final Color PROGRESS_BAR_RED = new JBColor(
-        new Color(239, 42, 59, 100),
-        new Color(239, 42, 59, 100));
-    private static final Color PROGRESS_BAR_YELLOW = new JBColor(
-        new Color(200, 164, 23, 100),
-        new Color(170, 124, 36, 100));
 
     ProgressbarStatusWidget() {
         setBorder(StatusBarWidget.WidgetBorder.INSTANCE);
@@ -114,12 +106,22 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
         TimeLeft timeLeft = DateUtils.computeStatusWidgetText();
 
         if (settingsService.getStatusUIType() == PROGRESS_BAR) {
-            if (timeLeft.getPercentage() > 40) {
-                g.setColor(PROGRESS_BAR_GREEN);
-            } else if (timeLeft.getPercentage() > 20) {
-                g.setColor(PROGRESS_BAR_YELLOW);
+            if (settingsService.getCustomPbgarColorsEnabled()) {
+                if (timeLeft.getPercentage() < settingsService.getPgbarRedLevel()) {
+                    g.setColor(UIUtils.rgbaStrToColor(settingsService.getRgbaRedColor()));
+                } else if (timeLeft.getPercentage() < settingsService.getPgbarYellowLevel()) {
+                    g.setColor(UIUtils.rgbaStrToColor(settingsService.getRgbaYellowColor()));
+                } else {
+                    g.setColor(UIUtils.rgbaStrToColor(settingsService.getRgbaGreenColor()));
+                }
             } else {
-                g.setColor(PROGRESS_BAR_RED);
+                if (timeLeft.getPercentage() < settingsService.getPgbarRedLevel()) {
+                    g.setColor(Defaults.Colors.DEFAULT_RED_JBCOLOR);
+                } else if (timeLeft.getPercentage() < settingsService.getPgbarYellowLevel()) {
+                    g.setColor(Defaults.Colors.DEFAULT_YELLOW_JBCOLOR);
+                } else {
+                    g.setColor(Defaults.Colors.DEFAULT_GREEN_JBCOLOR);
+                }
             }
             g.fillRect(0, insets.bottom, (int) (getPreferredSize().width * timeLeft.getPercentage() / 100.0), barHeight);
         }

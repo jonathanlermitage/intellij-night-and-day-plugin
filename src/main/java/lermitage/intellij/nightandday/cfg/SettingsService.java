@@ -28,6 +28,12 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public StatusUIType statusUIType;
     public Integer statusWidth;
     public Integer fontSize;
+    public String rgbaGreenColor;
+    public String rgbaYellowColor;
+    public String rgbaRedColor;
+    public Boolean customPbgarColorsEnabled;
+    public Integer pgbarRedLevel;
+    public Integer pgbarYellowLevel;
 
     // status bar: text
     public StatusTextType statusTextType;
@@ -84,6 +90,54 @@ public class SettingsService implements PersistentStateComponent<SettingsService
 
     public void setFontSize(Integer fontSize) {
         this.fontSize = fontSize;
+    }
+
+    public String getRgbaGreenColor() {
+        return rgbaGreenColor == null ? Defaults.Colors.DEFAULT_GREEN_COLOR_STR : rgbaGreenColor;
+    }
+
+    public void setRgbaGreenColor(String rgbaGreenColor) {
+        this.rgbaGreenColor = rgbaGreenColor;
+    }
+
+    public String getRgbaYellowColor() {
+        return rgbaYellowColor == null ? Defaults.Colors.DEFAULT_YELLOW_COLOR_STR : rgbaYellowColor;
+    }
+
+    public void setRgbaYellowColor(String rgbaYellowColor) {
+        this.rgbaYellowColor = rgbaYellowColor;
+    }
+
+    public String getRgbaRedColor() {
+        return rgbaRedColor == null ? Defaults.Colors.DEFAULT_RED_COLOR_STR : rgbaRedColor;
+    }
+
+    public void setRgbaRedColor(String rgbaRedColor) {
+        this.rgbaRedColor = rgbaRedColor;
+    }
+    
+    public Boolean getCustomPbgarColorsEnabled() {
+        return customPbgarColorsEnabled == null ? Defaults.DEFAULT_CUSTOM_PGBAR_COLORS_ENABLED : customPbgarColorsEnabled;
+    }
+
+    public void setCustomPbgarColorsEnabled(Boolean customPbgarColorsEnabled) {
+        this.customPbgarColorsEnabled = customPbgarColorsEnabled;
+    }
+
+    public Integer getPgbarRedLevel() {
+        return pgbarRedLevel == null ? Defaults.DEFAULT_PGBAR_RED_LEVEL : pgbarRedLevel;
+    }
+
+    public void setPgbarRedLevel(Integer pgbarRedLevel) {
+        this.pgbarRedLevel = pgbarRedLevel;
+    }
+
+    public Integer getPgbarYellowLevel() {
+        return pgbarYellowLevel == null ? Defaults.DEFAULT_PGBAR_YELLOW_LEVEL : pgbarYellowLevel;
+    }
+
+    public void setPgbarYellowLevel(Integer pgbarYellowLevel) {
+        this.pgbarYellowLevel = pgbarYellowLevel;
     }
 
     public StatusTextType getStatusTextType() {
