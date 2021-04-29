@@ -115,9 +115,21 @@ public class SettingsForm implements Configurable {
             fontSizeField.setValue(Defaults.DEFAULT_FONT_SIZE);
             widgetWidthField.setValue(Defaults.DEFAULT_WIDGET_WIDTH);
             customPgbarColorsEnabledCheckBox.setSelected(Defaults.DEFAULT_CUSTOM_PGBAR_COLORS_ENABLED);
+            yellowColorPercentageField.setValue(Defaults.DEFAULT_PGBAR_YELLOW_LEVEL);
+            redColorPercentageField.setValue(Defaults.DEFAULT_PGBAR_RED_LEVEL);
+
             greenColorTextField.setText(Defaults.Colors.DEFAULT_GREEN_COLOR_STR);
             yellowColorTextField.setText(Defaults.Colors.DEFAULT_YELLOW_COLOR_STR);
             redColorTextField.setText(Defaults.Colors.DEFAULT_RED_COLOR_STR);
+
+            greenColor = Defaults.Colors.DEFAULT_GREEN_COLOR;
+            yellowColor = Defaults.Colors.DEFAULT_YELLOW_COLOR;
+            redColor = Defaults.Colors.DEFAULT_RED_COLOR;
+
+            greenColorTextField.setBackground(greenColor);
+            yellowColorTextField.setBackground(yellowColor);
+            redColorTextField.setBackground(redColor);
+
             modified = true;
         });
         customDatesStartButton.addActionListener(e -> {
@@ -278,6 +290,8 @@ public class SettingsForm implements Configurable {
         suffixTextField.getDocument().addDocumentListener(docListener);
         fontSizeField.addChangeListener(changeListener);
         widgetWidthField.addChangeListener(changeListener);
+        yellowColorPercentageField.addChangeListener(changeListener);
+        redColorPercentageField.addChangeListener(changeListener);
 
         updateComponentsVisibility();
 
@@ -304,6 +318,8 @@ public class SettingsForm implements Configurable {
         settingsService.setFontSize((Integer) fontSizeField.getValue());
         settingsService.setStatusWidth((Integer) widgetWidthField.getValue());
         settingsService.setCustomPbgarColorsEnabled(customPgbarColorsEnabledCheckBox.isSelected());
+        settingsService.setPgbarYellowLevel((Integer) yellowColorPercentageField.getValue());
+        settingsService.setPgbarRedLevel((Integer) redColorPercentageField.getValue());
         settingsService.setRgbaGreenColor(greenColorTextField.getText());
         settingsService.setRgbaYellowColor(yellowColorTextField.getText());
         settingsService.setRgbaRedColor(redColorTextField.getText());
@@ -325,6 +341,8 @@ public class SettingsForm implements Configurable {
         settingsService.setFontSize(settingsService.getFontSize());
         settingsService.setStatusWidth(settingsService.getStatusWidth());
         settingsService.setCustomPbgarColorsEnabled(settingsService.getCustomPbgarColorsEnabled());
+        settingsService.setPgbarYellowLevel(settingsService.getPgbarYellowLevel());
+        settingsService.setPgbarRedLevel(settingsService.getPgbarRedLevel());
         settingsService.setRgbaGreenColor(settingsService.getRgbaGreenColor());
         settingsService.setRgbaYellowColor(settingsService.getRgbaYellowColor());
         settingsService.setRgbaRedColor(settingsService.getRgbaRedColor());
@@ -346,6 +364,8 @@ public class SettingsForm implements Configurable {
         fontSizeField.setValue(settingsService.getFontSize());
         widgetWidthField.setValue(settingsService.getStatusWidth());
         customPgbarColorsEnabledCheckBox.setSelected(settingsService.getCustomPbgarColorsEnabled());
+        yellowColorPercentageField.setValue(settingsService.getPgbarYellowLevel());
+        redColorPercentageField.setValue(settingsService.getPgbarRedLevel());
         greenColorTextField.setText(settingsService.getRgbaGreenColor());
         yellowColorTextField.setText(settingsService.getRgbaYellowColor());
         redColorTextField.setText(settingsService.getRgbaRedColor());
