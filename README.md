@@ -1,18 +1,13 @@
 <h1 align="center">
-    <img src="./src/main/resources/META-INF/pluginIcon.svg" width="84" height="84" alt="logo"/><br/>
+    <a href="https://plugins.jetbrains.com/plugin/16550-night-and-day"><img src="./src/main/resources/META-INF/pluginIcon.svg" width="84" height="84" alt="logo"/></a><br/>
     Nigh and Day
 </h1>
 
-<!--p align="center">
-    <a href="https://plugins.jetbrains.com/plugin/11058-extra-icons"><img src="https://img.shields.io/jetbrains/plugin/v/11058-extra-icons.svg"/></a>
-    <a href="https://plugins.jetbrains.com/plugin/11058-extra-icons"><img src="https://img.shields.io/jetbrains/plugin/d/11058-extra-icons.svg"/></a>
-    <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/intellij-extra-icons-plugin.svg"/></a>
-    <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/graphs/contributors"><img src="https://img.shields.io/github/contributors/jonathanlermitage/intellij-extra-icons-plugin"/></a><br>
-    <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/actions?query=workflow%3A%22Build%22"><img src="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/workflows/Build/badge.svg"/></a>
-    <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/actions?query=workflow%3A%22Compatibility%22"><img src="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/workflows/Compatibility/badge.svg"/></a><br>
-    <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/actions?query=workflow%3A%22Build+EAP%22"><img src="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/workflows/Build%20EAP/badge.svg"/></a>
-    <a href="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/actions?query=workflow%3A%22Compatibility+EAP%22"><img src="https://github.com/jonathanlermitage/intellij-extra-icons-plugin/workflows/Compatibility%20EAP/badge.svg"/></a>
-</p-->
+<p align="center">
+    <a href="https://plugins.jetbrains.com/plugin/16550-night-and-day"><img src="https://img.shields.io/jetbrains/plugin/v/16550-night-and-day.svg"/></a>
+    <a href="https://plugins.jetbrains.com/plugin/16550-night-and-day"><img src="https://img.shields.io/jetbrains/plugin/d/16550-night-and-day.svg"/></a>
+    </a>
+</p>
 
 An IntelliJ IDEA based plugin that shows in Status Bar how much time left in percentage or duration (until the end of day, week, month, year, or a custom date time).  
 This plugin is highly inspired from the [Day Night](https://getdaynight.com) application.
