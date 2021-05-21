@@ -1,4 +1,4 @@
-<idea-plugin require-restart="true">
+<idea-plugin>
     <id>lermitage.intellij.nightandday</id>
     <name>Night and Day</name>
     <version>REPLACED_BY_GRADLE</version>
@@ -17,6 +17,10 @@
     </description>
 
     <change-notes><![CDATA[
+    1.2.0 (2021/05/22)
+    <ul>
+      <li>Plugin can be loaded with no IDE restart.</li>
+    </ul>
     1.1.0 (2021/05/01)
     <ul>
       <li>Progress bar colors are now customizable.</li>
