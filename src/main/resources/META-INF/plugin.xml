@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
     <id>lermitage.intellij.nightandday</id>
     <name>Night and Day</name>
     <version>REPLACED_BY_GRADLE</version>
@@ -17,6 +17,10 @@
     </description>
 
     <change-notes><![CDATA[
+    1.2.1 (2021/05/24)
+    <ul>
+      <li>Revert 1.2.0 change (Plugin can be loaded with no IDE restart): a bug in IJ resets plugin preferences.</li>
+    </ul>
     1.2.0 (2021/05/22)
     <ul>
       <li>Plugin can be loaded with no IDE restart.</li>
