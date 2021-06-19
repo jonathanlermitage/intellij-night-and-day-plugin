@@ -17,6 +17,10 @@
     </description>
 
     <change-notes><![CDATA[
+    1.3.0 (2021/06/20)
+    <ul>
+      <li>internal: remove usage of code deprecated in IJ 2021.2.</li>
+    </ul>
     1.2.1 (2021/05/24)
     <ul>
       <li>Revert 1.2.0 change (Plugin can be loaded with no IDE restart): a bug in IJ resets plugin preferences.</li>

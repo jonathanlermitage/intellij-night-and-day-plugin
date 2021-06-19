@@ -2,7 +2,6 @@
 
 package lermitage.intellij.nightandday.core;
 
-import com.intellij.openapi.components.ServiceManager;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusDurationEndType;
 import lermitage.intellij.nightandday.cfg.StatusTextType;
@@ -29,7 +28,7 @@ public class DateUtils {
         try {
             String statusText;
             String tooltip;
-            SettingsService settingsService = ServiceManager.getService(SettingsService.class);
+            SettingsService settingsService = IJUtils.getSettingsService();
             String prefix = settingsService.getPrefixTxt();
             String suffix = settingsService.getSuffixTxt();
             String awakeStart = settingsService.getAwakeStart();
@@ -98,7 +97,7 @@ public class DateUtils {
     }
 
     private static int timeLeftPercentage(String awakeStart, String awakeEnd) {
-        SettingsService settingsService = ServiceManager.getService(SettingsService.class);
+        SettingsService settingsService = IJUtils.getSettingsService();
         LocalDateTime start = DateUtils.startOf(settingsService.getStatusDurationEndType(), settingsService.getCustomStartDatetime());
 
         LocalDateTime now = LocalDateTime.now();

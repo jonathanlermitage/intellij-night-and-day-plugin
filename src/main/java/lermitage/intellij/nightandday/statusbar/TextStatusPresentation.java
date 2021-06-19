@@ -3,7 +3,6 @@
 package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.ListPopup;
@@ -12,10 +11,10 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.nightandday.cfg.SettingsService;
-import lermitage.intellij.nightandday.cfg.StatusDurationEndType;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.Globals;
+import lermitage.intellij.nightandday.core.IJUtils;
 import lermitage.intellij.nightandday.core.TimeLeft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +58,7 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
     @Override
     public @Nullable String getSelectedValue() {
         if (settingsService == null) {
-            settingsService = ServiceManager.getService(SettingsService.class);
+            settingsService = IJUtils.getSettingsService();
         }
         if (settingsService.getStatusUIType() != StatusUIType.TEXT) {
             return "";

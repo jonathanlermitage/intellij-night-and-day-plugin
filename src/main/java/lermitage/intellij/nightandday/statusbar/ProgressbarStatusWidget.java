@@ -4,7 +4,6 @@ package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.ide.ui.UISettings;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.CustomStatusBarWidget;
 import com.intellij.openapi.wm.StatusBar;
@@ -15,6 +14,7 @@ import lermitage.intellij.nightandday.cfg.Defaults;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.Globals;
+import lermitage.intellij.nightandday.core.IJUtils;
 import lermitage.intellij.nightandday.core.TimeLeft;
 import lermitage.intellij.nightandday.core.UIUtils;
 import org.jetbrains.annotations.NotNull;
@@ -85,7 +85,7 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     @Override
     public void paintComponent(final Graphics g) {
         if (settingsService == null) {
-            settingsService = ServiceManager.getService(SettingsService.class);
+            settingsService = IJUtils.getSettingsService();
         }
 
         if (settingsService.getStatusUIType() != PROGRESS_BAR) {
@@ -158,7 +158,7 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     @Override
     public Dimension getPreferredSize() {
         if (settingsService == null) {
-            settingsService = ServiceManager.getService(SettingsService.class);
+            settingsService = IJUtils.getSettingsService();
         }
 
         Font widgetFont = JBUI.Fonts.label(settingsService.getFontSize());

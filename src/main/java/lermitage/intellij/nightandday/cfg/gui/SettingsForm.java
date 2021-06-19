@@ -2,7 +2,6 @@
 
 package lermitage.intellij.nightandday.cfg.gui;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.ui.ColorPicker;
@@ -95,7 +94,7 @@ public class SettingsForm implements Configurable {
     private boolean modified = false;
 
     public SettingsForm() {
-        this.settingsService = ServiceManager.getService(SettingsService.class);
+        this.settingsService = IJUtils.getSettingsService();
 
         Arrays.stream(StatusUIType.values()).forEach(type -> statusUITypeSelector.addItem(type.getLabel()));
         Arrays.stream(StatusTextType.values()).forEach(type -> statusTextTypeSelector.addItem(type.getLabel()));
