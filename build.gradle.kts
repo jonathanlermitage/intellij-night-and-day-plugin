@@ -26,11 +26,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-}
-
 intellij {
     downloadSources = pluginDownloadIdeaSources.toBoolean() && !inCI
     instrumentCode = pluginInstrumentPluginCode.toBoolean()
@@ -45,9 +40,6 @@ tasks {
         sourceCompatibility = pluginJavaVersion
         targetCompatibility = pluginJavaVersion
         options.compilerArgs = listOf("-Xlint:deprecation")
-    }
-    withType<Test> {
-        useJUnitPlatform()
     }
     withType<DependencyUpdatesTask> {
         checkForGradleUpdate = true
