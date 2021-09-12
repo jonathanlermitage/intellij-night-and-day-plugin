@@ -52,10 +52,10 @@
         <applicationService serviceImplementation="lermitage.intellij.nightandday.cfg.SettingsService"/>
         <statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
                                 id="lermitage.intellij.nightandday.statusbar.TextStatusWidgetFactory"
-                                order="first"/>
+                                order="first, after lermitage.intellij.battery.status.statusbar.BatteryStatusWidgetFactory"/>
         <statusBarWidgetFactory implementation="lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidgetFactory"
                                 id="lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidgetFactory"
-                                order="first"/>
+                                order="first, after lermitage.intellij.battery.status.statusbar.BatteryStatusWidgetFactory"/>
         <applicationConfigurable instance="lermitage.intellij.nightandday.cfg.gui.SettingsForm"
                                  id="LermitageNightandday"
                                  displayName="Night and Day"
