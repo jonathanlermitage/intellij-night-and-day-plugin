@@ -17,6 +17,10 @@
     </description>
 
     <change-notes><![CDATA[
+    1.4.0 (WIP)
+    <ul>
+      <li>make status bar items ordering more consistent.</li>
+    </ul>
     1.3.0 (2021/06/20)
     <ul>
       <li>internal: remove usage of code deprecated in IJ 2021.2.</li>

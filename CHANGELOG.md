@@ -1,5 +1,8 @@
 # Night and Day Change Log
 
+## 1.4.0 (WIP)
+* make status bar items ordering more consistent.
+
 ## 1.3.0 (2021/06/20)
 * internal: remove usage of code deprecated in IJ 2021.2.
 
