@@ -28,6 +28,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static lermitage.intellij.nightandday.cfg.StatusUIType.PROGRESS_BAR;
 
@@ -35,9 +37,8 @@ import static lermitage.intellij.nightandday.cfg.StatusUIType.PROGRESS_BAR;
 public class ProgressbarStatusWidget extends JButton implements CustomStatusBarWidget {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
-    private boolean forceExit = false;
-    private Thread updateThread = null;
     private SettingsService settingsService;
+    private Timer timer;
 
     ProgressbarStatusWidget() {
         setBorder(StatusBarWidget.WidgetBorder.INSTANCE);
@@ -59,15 +60,13 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
 
     private void continuousStatusWidgetUpdate() {
         try {
-            updateThread = Thread.currentThread();
-            LOG.info("Registered updateThread " + updateThread.getId());
-            while (!forceExit) {
-                repaint();
-                //noinspection BusyWait
-                Thread.sleep(30_000);
-            }
-        } catch (InterruptedException e) {
-            LOG.info("App disposed, forced updateThread interruption.");
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    repaint();
+                }
+            }, 0, 30_000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,10 +74,9 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
 
     @Override
     public void dispose() {
-        forceExit = true;
-        if (updateThread != null && !updateThread.isInterrupted()) {
-            LOG.info("Interrupting updateThread " + updateThread.getId());
-            updateThread.interrupt();
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
         }
     }
 
