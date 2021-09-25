@@ -1,10 +1,12 @@
 # Night and Day Change Log
 
 ## 1.4.0 (WIP)
-* make status bar items ordering more consistent.
+* Make status bar items ordering more consistent.
+* Fix: the config panel was constantly marked as modified. Changes are now correctly detected.
+* Fix: some preferences were not persisted.
 
 ## 1.3.0 (2021/06/20)
-* internal: remove usage of code deprecated in IJ 2021.2.
+* Internal: remove usage of code deprecated in IJ 2021.2.
 
 ## 1.2.1 (2021/05/24)
 * Revert 1.2.0 change (Plugin can be loaded with no IDE restart): a bug in IJ resets plugin preferences.

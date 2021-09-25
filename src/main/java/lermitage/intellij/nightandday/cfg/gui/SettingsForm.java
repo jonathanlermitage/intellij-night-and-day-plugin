@@ -32,8 +32,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import java.awt.Color;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -245,42 +244,29 @@ public class SettingsForm implements Configurable {
                 modified = true;
             }
         };
-        ComponentListener componentListener = new ComponentListener() {
-            public void componentResized(ComponentEvent e) {
-                modified = true;
-            }
-
-            public void componentMoved(ComponentEvent e) {
-                modified = true;
-            }
-
-            public void componentShown(ComponentEvent e) {
-                modified = true;
-            }
-
-            public void componentHidden(ComponentEvent e) {
-                modified = true;
-            }
-        };
+        ActionListener actionListener = e -> modified = true;
         ChangeListener changeListener = e -> modified = true;
 
         statusDurationEndTypeSelector.addItemListener(item -> {
             customDatesPanel.setVisible(item.getItem().equals(StatusDurationEndType.CUSTOM_DATE.getLabel()));
             modified = true;
         });
-        statusUITypeSelector.addComponentListener(componentListener);
+        statusUITypeSelector.addActionListener(actionListener);
         statusUITypeSelector.addItemListener(item -> {
             updateComponentsVisibility();
             modified = true;
         });
-        statusTextTypeSelector.addComponentListener(componentListener);
-        awakeModeEnabledCheckBox.addComponentListener(componentListener);
-        customPgbarColorsEnabledCheckBox.addComponentListener(componentListener);
+        statusTextTypeSelector.addActionListener(actionListener);
+        awakeModeEnabledCheckBox.addActionListener(actionListener);
+        customPgbarColorsEnabledCheckBox.addActionListener(actionListener);
+        awakeStartTextField.getDocument().addDocumentListener(docListener);
         awakeEndTextField.getDocument().addDocumentListener(docListener);
         awakeModeEnabledCheckBox.addItemListener(item -> {
             updateComponentsVisibility();
             modified = true;
         });
+        customDatesStartTextField.getDocument().addDocumentListener(docListener);
+        customDatesEndTextField.getDocument().addDocumentListener(docListener);
         customPgbarColorsEnabledCheckBox.addItemListener(item -> {
             updateComponentsVisibility();
             modified = true;
@@ -323,6 +309,7 @@ public class SettingsForm implements Configurable {
         settingsService.setRgbaYellowColor(yellowColorTextField.getText());
         settingsService.setRgbaRedColor(redColorTextField.getText());
         IJUtils.refreshOpenedProjects(settingsService.getStatusUIType());
+        modified = false;
     }
 
     @Override

@@ -19,11 +19,12 @@
     <change-notes><![CDATA[
     1.4.0 (WIP)
     <ul>
-      <li>make status bar items ordering more consistent.</li>
+      <li>Make status bar items ordering more consistent.</li>
+      <li>Fix: the config panel was constantly marked as modified. Changes are now correctly detected.</li>
     </ul>
     1.3.0 (2021/06/20)
     <ul>
-      <li>internal: remove usage of code deprecated in IJ 2021.2.</li>
+      <li>Internal: remove usage of code deprecated in IJ 2021.2.</li>
     </ul>
     1.2.1 (2021/05/24)
     <ul>
