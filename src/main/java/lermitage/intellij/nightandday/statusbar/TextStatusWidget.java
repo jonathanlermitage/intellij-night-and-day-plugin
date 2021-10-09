@@ -19,13 +19,11 @@ import java.util.TimerTask;
 public class TextStatusWidget implements StatusBarWidget {
 
     private final StatusBar statusBar;
-    private final Project project;
     private Timer timer;
 
     @Contract(pure = true)
     public TextStatusWidget(Project project) {
         this.statusBar = WindowManager.getInstance().getStatusBar(project);
-        this.project = project;
     }
 
     @NotNull
@@ -37,7 +35,7 @@ public class TextStatusWidget implements StatusBarWidget {
     @Nullable
     @Override
     public WidgetPresentation getPresentation() {
-        return new TextStatusPresentation(statusBar, project, this);
+        return new TextStatusPresentation(statusBar);
     }
 
     @Override
