@@ -1,6 +1,6 @@
 # Night and Day Change Log
 
-## 1.4.0 (WIP)
+## 1.4.0 (2021/10/09)
 * Make status bar items ordering more consistent.
 * Fix: the config panel was constantly marked as modified. Changes are now correctly detected.
 * Fix: some preferences were not persisted.

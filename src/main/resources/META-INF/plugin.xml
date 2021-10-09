@@ -17,10 +17,11 @@
     </description>
 
     <change-notes><![CDATA[
-    1.4.0 (WIP)
+    1.4.0 (2021/10/09)
     <ul>
       <li>Make status bar items ordering more consistent.</li>
       <li>Fix: the config panel was constantly marked as modified. Changes are now correctly detected.</li>
+      <li>Fix: some preferences were not persisted.</li>
     </ul>
     1.3.0 (2021/06/20)
     <ul>
