@@ -11,6 +11,7 @@ import com.intellij.openapi.wm.WindowManager;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.statusbar.ProgressbarStatusWidget;
+import lermitage.intellij.nightandday.statusbar.TextStatusWidget;
 import org.jetbrains.annotations.Nullable;
 
 public class IJUtils {
@@ -19,19 +20,24 @@ public class IJUtils {
      * Refresh project status bar.
      */
     public static void refresh(Project project, StatusUIType statusUIType) {
-        if (IJUtils.isAlive(project)) {
+        if (isAlive(project)) {
             ProjectView view = ProjectView.getInstance(project);
             if (view != null) {
                 StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
                 if (statusBar != null) {
                     statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
                     statusBar.updateWidget(Globals.PROGRESSBAR_STATUS_WIDGET_ID);
-                    ProgressbarStatusWidget widget = (ProgressbarStatusWidget) statusBar.getWidget(Globals.PROGRESSBAR_STATUS_WIDGET_ID);
-                    if (widget != null) {
-                        widget.setVisible(false); // trick to force UI update if widget size changed
+                    ProgressbarStatusWidget progressBarStatusWidget = (ProgressbarStatusWidget) statusBar.getWidget(Globals.PROGRESSBAR_STATUS_WIDGET_ID);
+                    if (progressBarStatusWidget != null) {
+                        progressBarStatusWidget.setVisible(false); // trick to force UI update if widget size changed
                         if (statusUIType == StatusUIType.PROGRESS_BAR) {
-                            widget.setVisible(true);
+                            progressBarStatusWidget.setVisible(true);
                         }
+                        progressBarStatusWidget.reload();
+                    }
+                    TextStatusWidget textStatusWidget = (TextStatusWidget) statusBar.getWidget(Globals.TEXT_STATUS_WIDGET_ID);
+                    if (textStatusWidget != null) {
+                        textStatusWidget.reload();
                     }
                 }
             }

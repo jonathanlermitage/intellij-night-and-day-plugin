@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.Icon;
 import java.awt.event.MouseEvent;
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation {
 
@@ -53,13 +53,13 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
             settingsService = IJUtils.getSettingsService();
         }
         if (settingsService.getStatusUIType() != StatusUIType.TEXT) {
-            return "";
+            return null;
         }
-        LocalTime timerStart = LocalTime.now();
+        LocalDateTime timerStart = LocalDateTime.now();
         TimeLeft timeLeft = DateUtils.computeStatusWidgetText();
         String statusText = timeLeft.getLabel();
         statusTooltip = timeLeft.getTooltip();
-        long executionDuration = Duration.between(timerStart, LocalTime.now()).toMillis();
+        long executionDuration = Duration.between(timerStart, LocalDateTime.now()).toMillis();
         if (executionDuration > 30) {
             LOG.warn("Status updated in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
         }

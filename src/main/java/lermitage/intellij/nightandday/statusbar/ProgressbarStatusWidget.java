@@ -12,6 +12,7 @@ import com.intellij.ui.JBColor;
 import com.intellij.util.ui.JBUI;
 import lermitage.intellij.nightandday.cfg.Defaults;
 import lermitage.intellij.nightandday.cfg.SettingsService;
+import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.Globals;
 import lermitage.intellij.nightandday.core.IJUtils;
@@ -36,8 +37,8 @@ import static lermitage.intellij.nightandday.cfg.StatusUIType.PROGRESS_BAR;
 @SuppressWarnings("WeakerAccess")
 public class ProgressbarStatusWidget extends JButton implements CustomStatusBarWidget {
 
-    private final Logger LOG = Logger.getInstance(getClass().getName());
-    private SettingsService settingsService;
+    private final Logger LOG = Logger.getInstance(getClass());
+    private final SettingsService settingsService = IJUtils.getSettingsService();
     private Timer timer;
 
     ProgressbarStatusWidget() {
@@ -54,21 +55,28 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
 
     @Override
     public void install(@NotNull StatusBar statusBar) {
-        ApplicationManager.getApplication().executeOnPooledThread(this::continuousStatusWidgetUpdate);
+        ApplicationManager.getApplication().executeOnPooledThread(this::startIfNeeded);
         setVisible(true);
     }
 
-    private void continuousStatusWidgetUpdate() {
-        try {
-            timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    repaint();
-                }
-            }, 0, 30_000);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void reload() {
+        dispose();
+        startIfNeeded();
+    }
+
+    private void startIfNeeded() {
+        if (settingsService.getStatusUIType() == StatusUIType.PROGRESS_BAR) {
+            try {
+                timer = new Timer();
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        repaint();
+                    }
+                }, 0, 30_000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -82,10 +90,6 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
 
     @Override
     public void paintComponent(final Graphics g) {
-        if (settingsService == null) {
-            settingsService = IJUtils.getSettingsService();
-        }
-
         if (settingsService.getStatusUIType() != PROGRESS_BAR) {
             setVisible(false);
             return;
@@ -155,10 +159,6 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
 
     @Override
     public Dimension getPreferredSize() {
-        if (settingsService == null) {
-            settingsService = IJUtils.getSettingsService();
-        }
-
         Font widgetFont = JBUI.Fonts.label(settingsService.getFontSize());
         final FontMetrics fontMetrics = getFontMetrics(widgetFont);
         final Insets insets = getInsets();
