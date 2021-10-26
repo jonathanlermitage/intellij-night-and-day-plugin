@@ -3,8 +3,8 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 plugins {
     id("java")
     id("idea")
-    id("org.jetbrains.intellij") version "0.7.3" // https://github.com/JetBrains/gradle-intellij-plugin
-    id("com.github.ben-manes.versions") version "0.38.0" // https://github.com/ben-manes/gradle-versions-plugin
+    id("org.jetbrains.intellij") version "1.2.1" // https://github.com/JetBrains/gradle-intellij-plugin and https://lp.jetbrains.com/gradle-intellij-plugin/
+    id("com.github.ben-manes.versions") version "0.39.0" // https://github.com/ben-manes/gradle-versions-plugin
 }
 
 // Import variables from gradle.properties file
@@ -27,12 +27,12 @@ repositories {
 }
 
 intellij {
-    downloadSources = pluginDownloadIdeaSources.toBoolean() && !inCI
-    instrumentCode = pluginInstrumentPluginCode.toBoolean()
-    pluginName = "Night and Day"
-    sandboxDirectory = "${rootProject.projectDir}/.idea-sandbox/${pluginIdeaVersion}"
-    updateSinceUntilBuild = false
-    version = pluginIdeaVersion
+    downloadSources.set(pluginDownloadIdeaSources.toBoolean() && !inCI)
+    instrumentCode.set(pluginInstrumentPluginCode.toBoolean())
+    pluginName.set("Night and Day")
+    sandboxDir.set("${rootProject.projectDir}/.idea-sandbox/${shortIdeVersion(pluginIdeaVersion)}")
+    updateSinceUntilBuild.set(false)
+    version.set(pluginIdeaVersion)
 }
 
 tasks {
@@ -76,5 +76,17 @@ fun isNonStable(version: String): Boolean {
     }
     return listOf("alpha", "Alpha", "ALPHA", "b", "beta", "Beta", "BETA", "rc", "RC", "M", "EA", "pr", "atlassian").any {
         "(?i).*[.-]${it}[.\\d-]*$".toRegex().matches(version)
+    }
+}
+
+/** Return an IDE version string without the optional PATCH number.
+ * In other words, replace IDE-MAJOR-MINOR(-PATCH) by IDE-MAJOR-MINOR. */
+fun shortIdeVersion(version: String): String {
+    val matcher = Regex("[A-Za-z]+[\\-]?[0-9]+[\\.]{1}[0-9]+")
+    return try {
+        matcher.findAll(version).map { it.value }.toList()[0]
+    } catch (e: Exception) {
+        logger.warn("Failed to shorten IDE version $version", e)
+        version
     }
 }
