@@ -1,5 +1,11 @@
 # Night and Day Change Log
 
+## 1.6.0 (2021/11/26)
+* Add an option to hide status bar widget.
+
+## 1.5.0 (2021/10/17)
+* Minor performance optimization.
+
 ## 1.4.0 (2021/10/09)
 * Make status bar items ordering more consistent.
 * Fix: the config panel was constantly marked as modified. Changes are now correctly detected.

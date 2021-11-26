@@ -17,6 +17,10 @@
     </description>
 
     <change-notes><![CDATA[
+    1.6.0 (2021/11/26)
+    <ul>
+      <li>Add an option to hide status bar widget.</li>
+    </ul>
     1.5.0 (2021/10/17)
     <ul>
       <li>Minor performance optimization.</li>
