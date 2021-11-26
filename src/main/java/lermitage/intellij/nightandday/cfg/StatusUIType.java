@@ -6,7 +6,8 @@ import java.util.Arrays;
 
 public enum StatusUIType {
     PROGRESS_BAR("text and a progress bar in background", 0),
-    TEXT("text only", 1);
+    TEXT("text only", 1),
+    NONE("hidden", 2);
 
     String label;
     int idx;
