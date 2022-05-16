@@ -7,7 +7,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.CustomStatusBarWidget;
 import com.intellij.openapi.wm.StatusBar;
-import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.JBUI;
 import lermitage.intellij.nightandday.cfg.Defaults;
@@ -42,9 +41,10 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     private Timer timer;
 
     ProgressbarStatusWidget() {
-        setBorder(StatusBarWidget.WidgetBorder.INSTANCE);
+        setBorder(JBUI.CurrentTheme.StatusBar.Widget.border()); // TODO add an option to remove the call to 'setBorder' in order to remove margins
         setOpaque(false);
         setFocusable(false);
+        setBorderPainted(false);
     }
 
     @NotNull

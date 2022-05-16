@@ -15,7 +15,7 @@ This plugin is highly inspired from the [Day Night](https://getdaynight.com) app
 1. [Build](#build)  
 2. [Contribution](#contribution)  
 3. [License](#license)  
-4. [Credits](#credits)  
+4. [Screenshots](#screenshots)  
 
 ## Build
 
@@ -37,16 +37,12 @@ To finish, don't hesitate to add your name or nickname (and LinkedIn profile, et
 
 MIT License. In other words, you can do what you want: this project is entirely OpenSource, Free and Gratis.
 
-## Credits
+## Screenshots
 
-### 🤝 Contributors
+Status bar:
 
-* (author) Jonathan Lermitage (<jonathan.lermitage@gmail.com>, [![linkedin](misc/linkedin_profile_badge.png)](https://www.linkedin.com/in/jonathan-lermitage-092711142/), [buymeacoff.ee](http://buymeacoff.ee/jlermitage))
+![status bar](misc/screenshots/night-and-day-statusbar.png)
 
-### 🤝 [JetBrains](https://www.jetbrains.com/idea/)
+Settings:
 
-Thanks for their Open-Source licence to their amazing IDEs.
-
-### 🤝 [Syntevo](https://www.syntevo.com/smartgit/)
-
-Thanks for their licence for **SmartGit** (an excellent graphical Git client, free for non-commercial projects).
+![settings](misc/screenshots/night-and-day-settings.png)

@@ -1,5 +1,8 @@
 # Night and Day Change Log
 
+## 1.6.1 (2022/05/16)
+* Fix usage of deprecated JetBrains APIs.
+
 ## 1.6.0 (2021/11/26)
 * Add an option to hide status bar widget.
 

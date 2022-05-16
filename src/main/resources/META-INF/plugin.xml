@@ -8,15 +8,21 @@
       An IntelliJ IDEA based plugin that shows in Status Bar how much time left in percentage or duration (until the end of day,
       week, month, year, or a custom date time).<br/>
       Configuration: see <i>File</i> &gt; <i>Settings</i> &gt; <i>Appearance &amp; Behavior</i> &gt; <i>Day and Night</i>.<br/>
-      This plugin is highly inspired from the <a href="https://getdaynight.com">Day Night</a> application.<br/><br/>
-      If you find this plugin helpful, you can <a href="http://buymeacoff.ee/jlermitage">buy me a coffee</a>. <b>Thank you! 👍</b><br/><br/>
+      This plugin is highly inspired from the <a href="https://getdaynight.com">Day Night</a> application.<br/>
+      If you find this plugin helpful, you can <a href="http://buymeacoff.ee/jlermitage">buy me a coffee</a>. <b>Thank you! 👍</b><br/>
       See <a href="https://github.com/jonathanlermitage/intellij-night-and-day-plugin/blob/main/CHANGELOG.md">changelog</a>
       and <a href="https://github.com/jonathanlermitage/intellij-night-and-day-plugin/blob/main/README.md">readme</a> on GitHub.
       Check also my <a href="https://plugins.jetbrains.com/author/ed9cc7eb-74f5-46c1-b0df-67162fe1a1c5">plugins</a>.
+      <br/>
+      <img src="https://raw.githubusercontent.com/jonathanlermitage/intellij-night-and-day-plugin/main/misc/screenshots/night-and-day-statusbar.png" alt="status bar screenshot"/>
     ]]>
     </description>
 
     <change-notes><![CDATA[
+    1.6.1 (2022/05/16)
+    <ul>
+      <li>Fix usage of deprecated JetBrains APIs.</li>
+    </ul>
     1.6.0 (2021/11/26)
     <ul>
       <li>Add an option to hide status bar widget.</li>
@@ -55,7 +61,7 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="201.6668.113"/>
+    <idea-version since-build="221"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
