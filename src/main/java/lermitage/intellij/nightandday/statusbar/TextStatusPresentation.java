@@ -4,13 +4,11 @@ package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.popup.ListPopup;
-import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.DateUtils;
-import lermitage.intellij.nightandday.core.Globals;
 import lermitage.intellij.nightandday.core.IJUtils;
 import lermitage.intellij.nightandday.core.TimeLeft;
 import org.jetbrains.annotations.Nullable;
@@ -22,12 +20,7 @@ import java.time.LocalDateTime;
 
 class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation {
 
-    public TextStatusPresentation(StatusBar statusBar) {
-        this.statusBar = statusBar;
-    }
-
     private final Logger LOG = Logger.getInstance(getClass().getName());
-    private final StatusBar statusBar;
     private SettingsService settingsService;
     private String statusTooltip = "";
 
@@ -36,13 +29,12 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
         return "<html>" + statusTooltip + "</html>";
     }
 
-    @Override
+    // removed @Override as MultipleTextValuesPresentation.getClickConsumer is scheduled for removal in a future release
     public @Nullable Consumer<MouseEvent> getClickConsumer() {
-        // FIXME getClickConsumer() is never called since migration to MultipleTextValuesPresentation + Multiframe
-        return mouseEvent -> statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
+        return null;
     }
 
-    @Override
+    // removed @Override as MultipleTextValuesPresentation.getPopupStep is scheduled for removal in a future release
     public @Nullable("null means the widget is unable to show the popup") ListPopup getPopupStep() {
         return null;
     }

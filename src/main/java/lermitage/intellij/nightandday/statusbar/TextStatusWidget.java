@@ -39,7 +39,7 @@ public class TextStatusWidget implements StatusBarWidget {
     @Nullable
     @Override
     public WidgetPresentation getPresentation() {
-        return new TextStatusPresentation(statusBar);
+        return new TextStatusPresentation();
     }
 
     @Override
