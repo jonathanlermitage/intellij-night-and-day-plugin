@@ -3,7 +3,6 @@
 package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.popup.ListPopup;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.nightandday.cfg.SettingsService;
@@ -13,7 +12,7 @@ import lermitage.intellij.nightandday.core.IJUtils;
 import lermitage.intellij.nightandday.core.TimeLeft;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -31,11 +30,6 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
 
     // removed @Override as MultipleTextValuesPresentation.getClickConsumer is scheduled for removal in a future release
     public @Nullable Consumer<MouseEvent> getClickConsumer() {
-        return null;
-    }
-
-    // removed @Override as MultipleTextValuesPresentation.getPopupStep is scheduled for removal in a future release
-    public @Nullable("null means the widget is unable to show the popup") ListPopup getPopupStep() {
         return null;
     }
 

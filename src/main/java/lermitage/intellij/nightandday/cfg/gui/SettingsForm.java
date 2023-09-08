@@ -4,7 +4,7 @@ package lermitage.intellij.nightandday.cfg.gui;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
-import com.intellij.ui.ColorPicker;
+import com.intellij.ui.ColorChooserService;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.picker.ColorListener;
 import lermitage.intellij.nightandday.cfg.Defaults;
@@ -18,20 +18,12 @@ import lermitage.intellij.nightandday.core.UIUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -136,7 +128,7 @@ public class SettingsForm implements Configurable {
         });
         greenColorPickerBtn.addActionListener(e -> {
             //noinspection Convert2Lambda
-            ColorPicker.showColorPickerPopup(null, greenColor, null, new ColorListener() {
+            ColorChooserService.getInstance().showPopup(null, greenColor, null, new ColorListener() {
                 @Override
                 public void colorChanged(Color color, Object source) {
                     greenColor = color;
@@ -148,7 +140,7 @@ public class SettingsForm implements Configurable {
         });
         yellowColorPickerBtn.addActionListener(e -> {
             //noinspection Convert2Lambda
-            ColorPicker.showColorPickerPopup(null, yellowColor, null, new ColorListener() {
+            ColorChooserService.getInstance().showPopup(null, yellowColor, null, new ColorListener() {
                 @Override
                 public void colorChanged(Color color, Object source) {
                     yellowColor = color;
@@ -160,7 +152,7 @@ public class SettingsForm implements Configurable {
         });
         redColorPickerBtn.addActionListener(e -> {
             //noinspection Convert2Lambda
-            ColorPicker.showColorPickerPopup(null, redColor, null, new ColorListener() {
+            ColorChooserService.getInstance().showPopup(null, redColor, null, new ColorListener() {
                 @Override
                 public void colorChanged(Color color, Object source) {
                     redColor = color;

@@ -1,5 +1,8 @@
 # Night and Day Change Log
 
+## 1.6.3 (2023/09/09)
+* Rework usage of deprecated JetBrains API, fix compatibility with future IDE releases.
+
 ## 1.6.2 (2022/11/26)
 * Remove usage of deprecated JetBrains API, fix compatibility with future IDE releases.
 
