@@ -79,7 +79,7 @@ public class SettingsForm implements Configurable {
     private Color yellowColor;
     private Color redColor;
 
-    private final Logger LOG = Logger.getInstance(getClass().getName());
+    private final Logger LOGGER = Logger.getInstance(getClass().getName());
     private final SettingsService settingsService;
 
     private boolean modified = false;
@@ -366,7 +366,7 @@ public class SettingsForm implements Configurable {
             customDatesStartTextField = new JFormattedTextField(new MaskFormatter(DateUtils.DATE_TIME_MASK));
             customDatesEndTextField = new JFormattedTextField(new MaskFormatter(DateUtils.DATE_TIME_MASK));
         } catch (ParseException e) {
-            LOG.error("Init error", e);
+            LOGGER.error("Init error", e);
         }
     }
 }

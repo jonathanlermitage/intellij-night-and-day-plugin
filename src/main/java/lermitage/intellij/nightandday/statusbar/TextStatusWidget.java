@@ -3,6 +3,7 @@
 package lermitage.intellij.nightandday.statusbar;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
@@ -12,6 +13,7 @@ import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.Globals;
 import lermitage.intellij.nightandday.core.IJUtils;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +22,8 @@ import java.util.TimerTask;
 
 @SuppressWarnings("WeakerAccess")
 public class TextStatusWidget implements StatusBarWidget {
+
+    private final Logger LOGGER = Logger.getInstance(getClass().getName());
 
     private final StatusBar statusBar;
     private final SettingsService settingsService = IJUtils.getSettingsService();
@@ -63,7 +67,7 @@ public class TextStatusWidget implements StatusBarWidget {
                     }
                 }, 0, 30_000);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.warn(e);
             }
         }
     }

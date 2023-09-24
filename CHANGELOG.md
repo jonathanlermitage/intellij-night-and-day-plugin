@@ -1,5 +1,8 @@
 # Night and Day Change Log
 
+## 1.7.0 (2023/09/25)
+* Improve the rendering of the graphical progress bar when the new UI is enabled.
+
 ## 1.6.3 (2023/09/09)
 * Rework usage of deprecated JetBrains API, fix compatibility with future IDE releases.
 

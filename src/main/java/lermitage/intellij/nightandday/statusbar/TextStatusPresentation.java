@@ -10,6 +10,7 @@ import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.DateUtils;
 import lermitage.intellij.nightandday.core.IJUtils;
 import lermitage.intellij.nightandday.core.TimeLeft;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
 
 class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation {
 
-    private final Logger LOG = Logger.getInstance(getClass().getName());
+    private final Logger LOGGER = Logger.getInstance(getClass().getName());
+
     private SettingsService settingsService;
     private String statusTooltip = "";
 
@@ -47,7 +49,7 @@ class TextStatusPresentation implements StatusBarWidget.MultipleTextValuesPresen
         statusTooltip = timeLeft.getTooltip();
         long executionDuration = Duration.between(timerStart, LocalDateTime.now()).toMillis();
         if (executionDuration > 30) {
-            LOG.warn("Status updated in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
+            LOGGER.warn("Status updated in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
         }
         return statusText;
     }

@@ -19,13 +19,8 @@ import lermitage.intellij.nightandday.core.TimeLeft;
 import lermitage.intellij.nightandday.core.UIUtils;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Timer;
@@ -36,7 +31,8 @@ import static lermitage.intellij.nightandday.cfg.StatusUIType.PROGRESS_BAR;
 @SuppressWarnings("WeakerAccess")
 public class ProgressbarStatusWidget extends JButton implements CustomStatusBarWidget {
 
-    private final Logger LOG = Logger.getInstance(getClass());
+    private final Logger LOGGER = Logger.getInstance(getClass().getName());
+
     private final SettingsService settingsService = IJUtils.getSettingsService();
     private Timer timer;
 
@@ -75,7 +71,7 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
                     }
                 }, 0, 30_000);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.warn(e);
             }
         }
     }
@@ -125,7 +121,7 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
                     g.setColor(Defaults.Colors.DEFAULT_GREEN_JBCOLOR);
                 }
             }
-            g.fillRect(0, insets.bottom, (int) (getPreferredSize().width * timeLeft.getPercentage() / 100.0), barHeight);
+            g.fillRect(0, insets.bottom - 30, (int) (getPreferredSize().width * timeLeft.getPercentage() / 100.0), 130);
         }
         UISettings.setupAntialiasing(g);
 
@@ -148,7 +144,7 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
         g.drawString(txt, xOffset + (totalBarLength - infoWidth) / 2, yOffset + infoHeight + (barHeight - infoHeight) / 2 - 1);
 
         if (executionDuration > 30) {
-            LOG.warn("Status updated in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
+            LOGGER.warn("Status updated in " + executionDuration + " ms, it should be faster once IDE or project is fully loaded");
         }
     }
 
