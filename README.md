@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="https://plugins.jetbrains.com/plugin/16550-night-and-day"><img src="./src/main/resources/META-INF/pluginIcon.svg" width="84" height="84" alt="logo"/></a><br/>
-    Nigh and Day
+    Night and Day
 </h1>
 
 <p align="center">
