@@ -24,7 +24,7 @@ public class Defaults {
     public static final String DEFAULT_CUSTOM_START_DATETIME = LocalDateTime.now().withHour(0).withMinute(0).format(DateUtils.DATE_TIME_FORMATTER);
     public static final String DEFAULT_CUSTOM_END_DATETIME = LocalDateTime.now().withHour(23).withMinute(59).format(DateUtils.DATE_TIME_FORMATTER);
     public static final Integer DEFAULT_WIDGET_WIDTH = 100;
-    public static final Integer DEFAULT_FONT_SIZE = JBUI.Fonts.toolbarFont().getSize();
+    public static final Integer DEFAULT_FONT_SIZE = JBUI.Fonts.toolbarFont().getSize(); // TODO evaluate com.intellij.util.ui.JBUI.UISettings.getInstance().getFontSize()
     public static final Boolean DEFAULT_CUSTOM_PGBAR_COLORS_ENABLED = false;
     public static final Integer DEFAULT_PGBAR_RED_LEVEL = 20;
     public static final Integer DEFAULT_PGBAR_YELLOW_LEVEL = 40;

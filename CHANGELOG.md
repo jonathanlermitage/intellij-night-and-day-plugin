@@ -1,5 +1,8 @@
 # Night and Day Change Log
 
+## 1.7.1 (2023/11/08)
+* fix compatibility with future IDEs.
+
 ## 1.7.0 (2023/09/25)
 * Improve the rendering of the graphical progress bar when the new UI is enabled.
 
