@@ -8,17 +8,17 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.WindowManager;
+import com.intellij.util.concurrency.AppExecutorUtil;
 import lermitage.intellij.nightandday.cfg.SettingsService;
 import lermitage.intellij.nightandday.cfg.StatusUIType;
 import lermitage.intellij.nightandday.core.Globals;
 import lermitage.intellij.nightandday.core.IJUtils;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("WeakerAccess")
 public class TextStatusWidget implements StatusBarWidget {
@@ -27,7 +27,7 @@ public class TextStatusWidget implements StatusBarWidget {
 
     private final StatusBar statusBar;
     private final SettingsService settingsService = IJUtils.getSettingsService();
-    private Timer timer;
+    private ScheduledFuture<?> timer;
 
     @Contract(pure = true)
     public TextStatusWidget(Project project) {
@@ -59,13 +59,9 @@ public class TextStatusWidget implements StatusBarWidget {
     private void startIfNeeded(StatusBar statusBar) {
         if (settingsService.getStatusUIType() == StatusUIType.TEXT) {
             try {
-                timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
-                    }
-                }, 0, 30_000);
+                timer = AppExecutorUtil.getAppScheduledExecutorService().scheduleWithFixedDelay(() -> {
+                    statusBar.updateWidget(Globals.TEXT_STATUS_WIDGET_ID);
+                }, 0, 30, TimeUnit.SECONDS);
             } catch (Exception e) {
                 LOGGER.warn(e);
             }
@@ -75,8 +71,8 @@ public class TextStatusWidget implements StatusBarWidget {
     @Override
     public void dispose() {
         if (timer != null) {
-            timer.cancel();
-            timer.purge();
+            timer.cancel(true);
+            timer = null;
         }
     }
 }

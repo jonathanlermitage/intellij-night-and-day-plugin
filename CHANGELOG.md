@@ -1,7 +1,10 @@
 # Night and Day Change Log
 
+## 1.7.2 (2024/03/04)
+* minor performance optimization: reduce threads spawning by using IDE thread pool and scheduler instead of starting new threads for scheduled tasks.
+
 ## 1.7.1 (2023/11/08)
-* fix compatibility with future IDEs.
+* Fix compatibility with future IDEs.
 
 ## 1.7.0 (2023/09/25)
 * Improve the rendering of the graphical progress bar when the new UI is enabled.

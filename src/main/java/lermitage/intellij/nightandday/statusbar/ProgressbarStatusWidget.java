@@ -8,6 +8,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.CustomStatusBarWidget;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.ui.JBColor;
+import com.intellij.util.concurrency.AppExecutorUtil;
 import com.intellij.util.ui.JBUI;
 import lermitage.intellij.nightandday.cfg.Defaults;
 import lermitage.intellij.nightandday.cfg.SettingsService;
@@ -25,6 +26,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import static lermitage.intellij.nightandday.cfg.StatusUIType.PROGRESS_BAR;
 
@@ -34,7 +37,7 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     private final Logger LOGGER = Logger.getInstance(getClass().getName());
 
     private final SettingsService settingsService = IJUtils.getSettingsService();
-    private Timer timer;
+    private ScheduledFuture<?> timer;
 
     ProgressbarStatusWidget() {
         setBorder(JBUI.CurrentTheme.StatusBar.Widget.border()); // TODO add an option to remove the call to 'setBorder' in order to remove margins
@@ -63,13 +66,9 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     private void startIfNeeded() {
         if (settingsService.getStatusUIType() == StatusUIType.PROGRESS_BAR) {
             try {
-                timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        repaint();
-                    }
-                }, 0, 30_000);
+                timer = AppExecutorUtil.getAppScheduledExecutorService().scheduleWithFixedDelay(
+                    this::repaint,
+                    0, 30, TimeUnit.SECONDS);
             } catch (Exception e) {
                 LOGGER.warn(e);
             }
@@ -79,8 +78,8 @@ public class ProgressbarStatusWidget extends JButton implements CustomStatusBarW
     @Override
     public void dispose() {
         if (timer != null) {
-            timer.cancel();
-            timer.purge();
+            timer.cancel(true);
+            timer = null;
         }
     }
 
