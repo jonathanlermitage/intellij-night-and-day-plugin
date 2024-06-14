@@ -60,7 +60,7 @@ val junitVersion = "5.10.1"
 val junitPlatformLauncher = "1.10.1"
 
 dependencies {
-    implementation("org.apache.commons:commons-lang3:3.13.0") // because no longer bundled with IDE
+    implementation("org.apache.commons:commons-lang3:3.14.0") // because no longer bundled with IDE
 }
 
 intellij {
